@@ -1,3 +1,4 @@
+import 'package:echo1/component/story_profile_box.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
@@ -11,15 +12,55 @@ class EchoFeedScreen extends ConsumerStatefulWidget {
 class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
   @override
   Widget build(BuildContext context) {
-    return PeamanTimelineFeedsScreen(
-      headerBuilder: (context, ref) {
-        return PeamanTimelineFeedsScreenHeader(
-          title: PeamanText.heading4(
-            'Echo',
-            style: GoogleFonts.caveat(),
-          ),
-        );
-      },
+    return PeamanTimelineFeedsScreen(headerBuilder: (context, ref) {
+      return PeamanTimelineFeedsScreenHeader(
+        title: PeamanText.heading4(
+          'Echo',
+          style: GoogleFonts.caveat(),
+        ),
+      );
+    }, feedsListBuilder: (context, ref) {
+      return RefreshIndicator(
+        onRefresh: () async => ref.invalidate(
+          providerOfPeamanTimelineFeedsFuture,
+        ),
+        child: Column(
+          children: [
+            _momentList(),
+            _feedList(),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _momentList() {
+    return SizedBox(
+      height: 100.h,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: 8,
+          itemBuilder: (context, index) {
+            return MomentProfileBox(index: index);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _feedList() {
+    return Expanded(
+      child: PeamanFeedsList(
+        lastItemPadding: EdgeInsets.only(
+          top: 15.h,
+          bottom: 100.h,
+          left: 20.w,
+          right: 20.w,
+        ),
+      ),
     );
   }
 }

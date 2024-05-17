@@ -32,6 +32,10 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
       name: '$fName $lName',
       userName: userName,
       email: email,
+      country: "",
+      bio: "",
+      dob: 0,
+      gender: PeamanGender.unknown,
     );
 
     state = state.copyWith(
