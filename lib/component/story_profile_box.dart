@@ -1,8 +1,8 @@
 import 'package:echo1/screen/echo_story_page.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
+// ignore: must_be_immutable
 class MomentProfileBox extends StatelessWidget {
   final int index;
   bool isSeen;
@@ -33,7 +33,7 @@ class MomentProfileBox extends StatelessWidget {
                           scale: 1)
                       : null,
                   border: Border.all(
-                    color: AppColor.brightGreen,
+                    color: isSeen ? AppColor.white : AppColor.brightGreen,
                     width: 2,
                   ),
                 ),
@@ -72,7 +72,9 @@ class MomentProfileBox extends StatelessWidget {
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            EchoMomentScreen(),
+            EchoMomentScreen(
+          index: index,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final screenSize = MediaQuery.of(context).size;
 
@@ -101,23 +103,5 @@ class MomentProfileBox extends StatelessWidget {
         },
       ),
     );
-  }
-}
-
-class CircleRevealClipper extends CustomClipper<Rect> {
-  final double revealPercent;
-  final Offset center;
-
-  CircleRevealClipper(this.revealPercent, this.center);
-
-  @override
-  Rect getClip(Size size) {
-    final radius = size.width * revealPercent;
-    return Rect.fromCircle(center: center, radius: radius);
-  }
-
-  @override
-  bool shouldReclip(CircleRevealClipper oldClipper) {
-    return revealPercent != oldClipper.revealPercent;
   }
 }

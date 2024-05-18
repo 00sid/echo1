@@ -18,6 +18,37 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
           'Echo',
           style: GoogleFonts.caveat(),
         ),
+        actions: [
+          Center(
+            child: PeamanRoundIconButton(
+              padding: EdgeInsets.all(7.w),
+              onPressed: () {},
+              icon: Icon(
+                Icons.explore,
+                color: context.isDarkMode
+                    ? PeamanColors.white70
+                    : PeamanColors.black,
+                size: 16.w,
+              ),
+            ).pR(10.0),
+          ),
+          Center(
+            child: PeamanRoundIconButton(
+              padding: EdgeInsets.all(7.w),
+              onPressed: () => context.pushNamed(
+                PeamanChatsListScreen.route,
+              ),
+              icon: SvgPicture.asset(
+                'assets/svgs/outlined_send_message.svg',
+                package: 'peaman_ui_components',
+                color: context.isDarkMode
+                    ? PeamanColors.white70
+                    : PeamanColors.black,
+                width: 16.w,
+              ),
+            ).pR(10.0),
+          ),
+        ],
       );
     }, feedsListBuilder: (context, ref) {
       return RefreshIndicator(

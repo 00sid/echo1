@@ -1266,6 +1266,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  show_image:
+    dependency: "direct main"
+    description:
+      name: show_image
+      sha256: "264b90a30893eab9c5ce203592969874ac4d51bca9667f9506d16cf6e14662d6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
