@@ -1,3 +1,4 @@
+import 'package:echo1/component/verified_icon.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -74,6 +75,10 @@ class _EchoMomentScreenState extends ConsumerState<EchoMomentScreen> {
                         ],
                       ),
                     ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const VerifiedIcon(),
                     const SizedBox(
                       width: 5,
                     ),
