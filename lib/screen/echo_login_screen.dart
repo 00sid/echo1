@@ -1,5 +1,6 @@
 import 'package:echo1/providers/login/login_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
+import 'package:echo1/screen/echo_forget_password_screen.dart';
 import 'package:echo1/screen/echo_signup_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
@@ -115,11 +116,20 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
                 ],
               ),
               //forgot password
-              const Text(
-                "Forgot Password?",
-                style: TextStyle(
-                  color: AppColor.white,
-                  fontSize: 18,
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const EchoForgetPasswordScreen(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                    color: AppColor.white,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ],

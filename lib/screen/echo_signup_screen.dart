@@ -1,6 +1,7 @@
 import 'package:echo1/providers/signup/signup_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/utils/app_color.dart';
+import 'package:echo1/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
@@ -177,6 +178,7 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
               //   context,
               //   PeamanTimelineFeedsScreen.route,
               // );
+              showAlertMessage(context, "Account created successfully");
               Navigator.pushAndRemoveUntil(
                   context,
                   PageTransition(

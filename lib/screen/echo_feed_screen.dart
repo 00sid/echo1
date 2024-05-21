@@ -22,7 +22,10 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
           Center(
             child: PeamanRoundIconButton(
               padding: EdgeInsets.all(7.w),
-              onPressed: () {},
+              onPressed: () {
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => const EchoExploreScreen()));
+              },
               icon: Icon(
                 Icons.explore,
                 color: context.isDarkMode
