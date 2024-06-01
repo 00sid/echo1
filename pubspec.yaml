@@ -45,6 +45,8 @@ dependencies:
   json_serializable: ^6.8.0
   flutter_svg: ^1.1.6
   show_image: ^0.0.1
+  cloud_firestore: ^4.15.8
+  image_picker: ^0.8.9
 
 dev_dependencies:
   flutter_test:

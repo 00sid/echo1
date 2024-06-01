@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:echo1/providers/signup/signup_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:echo1/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
@@ -23,6 +26,8 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  Uint8List? _image;
+
   @override
   void dispose() {
     super.dispose();
@@ -41,6 +46,16 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.green,
+        leading: Center(
+          child: PeamanRoundIconButton(
+            padding: EdgeInsets.all(7.w),
+            onPressed: context.pop,
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              size: 16.w,
+            ),
+          ),
+        ),
       ),
       backgroundColor: AppColor.white,
       body: Padding(
@@ -55,11 +70,15 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   //logo
-                  const Center(
-                    child: PeamanText.heading1(
-                      "Signup",
-                    ),
-                  ),
+                  // const Center(
+                  //   child: PeamanText.heading1(
+                  //     "Signup",
+                  //   ),
+                  // ),
+
+                  //imageGetter
+
+                  _profileImgBuilder(),
 
                   PeamanInput(
                     hintText: "Last Name",
@@ -120,20 +139,35 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                       final password = passwordController.text.trim();
                       final confirmPassword =
                           confirmPasswordController.text.trim();
-                      if (passwordController.text.trim() ==
-                          confirmPasswordController.text.trim()) {
-                        ref.read(providerOfSignUp.notifier).signUpUser(
-                              lName: lastName,
-                              fName: firstName,
-                              userName: username,
-                              email: email,
-                              password: password,
-                              confirmPassword: confirmPassword,
-                            );
+                      if (passwordController.text.isNotEmpty &&
+                          confirmPasswordController.text.isNotEmpty &&
+                          lastNameController.text.isNotEmpty &&
+                          firstNameController.text.isNotEmpty &&
+                          usernameController.text.isNotEmpty &&
+                          emailController.text.isNotEmpty) {
+                        if (passwordController.text.trim() ==
+                            confirmPasswordController.text.trim()) {
+                          ref.read(providerOfSignUp.notifier).signUpUser(
+                                lName: lastName,
+                                fName: firstName,
+                                userName: username,
+                                email: email,
+                                password: password,
+                                confirmPassword: confirmPassword,
+                              );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Enter password correctly"),
+                            ),
+                          );
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Enter password correctly")));
+                          const SnackBar(
+                            content: Text("Please fill all fields"),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -191,5 +225,50 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
         }
       },
     );
+  }
+
+  Widget _profileImgBuilder() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Stack(
+        children: [
+          _image != null
+              ? CircleAvatar(radius: 64, backgroundImage: MemoryImage(_image!))
+              : const CircleAvatar(
+                  radius: 64,
+                  backgroundImage: AssetImage(
+                    'assets/images/avatar_unknown.png',
+                    package: 'peaman_ui_components',
+                  ),
+                ),
+          Positioned(
+              bottom: -10,
+              left: 80,
+              child: IconButton(
+                onPressed: selectImage,
+                icon: const Icon(Icons.add_a_photo),
+              ))
+        ],
+      ),
+    );
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  pickImage(ImageSource source) async {
+    // ignore: no_leading_underscores_for_local_identifiers
+    final ImagePicker _imagePicker = ImagePicker();
+    // ignore: no_leading_underscores_for_local_identifiers
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      return await _file.readAsBytes();
+    }
+    // ignore: avoid_print
+    print("NO image selected");
   }
 }

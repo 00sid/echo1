@@ -1,6 +1,6 @@
 import 'package:echo1/providers/login/login_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
-import 'package:echo1/screen/echo_forget_password_screen.dart';
+import 'package:echo1/screen/echo_forgot_password_screen.dart';
 import 'package:echo1/screen/echo_signup_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ class EchoLoginScreen extends ConsumerStatefulWidget {
 class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final formkey = GlobalKey<FormState>();
   @override
   void dispose() {
     super.dispose();
@@ -77,10 +78,17 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
                 onPressed: () async {
                   final email = emailController.text.trim();
                   final password = passwordController.text.trim();
-
-                  ref
-                      .read(providerOfLogin.notifier)
-                      .loginUser(email: email, password: password);
+                  if (email.isNotEmpty && password.isNotEmpty) {
+                    ref
+                        .read(providerOfLogin.notifier)
+                        .loginUser(email: email, password: password);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Please fill all the fields"),
+                      ),
+                    );
+                  }
                 },
                 color: AppColor.white,
               ),
@@ -120,7 +128,7 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const EchoForgetPasswordScreen(),
+                      builder: (context) => const EchoForgotPasswordScreen(),
                     ),
                   );
                 },
@@ -161,4 +169,6 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
       },
     );
   }
+
+  login() {}
 }

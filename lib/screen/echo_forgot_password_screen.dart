@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
-class EchoForgetPasswordScreen extends ConsumerStatefulWidget {
-  const EchoForgetPasswordScreen({super.key});
+class EchoForgotPasswordScreen extends ConsumerStatefulWidget {
+  const EchoForgotPasswordScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -14,7 +14,7 @@ class EchoForgetPasswordScreen extends ConsumerStatefulWidget {
 }
 
 class _EchoForgetPasswordScreenState
-    extends ConsumerState<EchoForgetPasswordScreen> {
+    extends ConsumerState<EchoForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   @override
   void dispose() {
@@ -34,7 +34,7 @@ class _EchoForgetPasswordScreenState
   PreferredSizeWidget _headerBuilder() {
     return AppBar(
       title: PeamanText.heading4(
-        "Forget Password",
+        "Forgot Password",
         style: GoogleFonts.caveat().copyWith(color: AppColor.white),
       ),
       centerTitle: true,
@@ -78,7 +78,7 @@ class _EchoForgetPasswordScreenState
   }
 
   forgotPassword() async {
-    if (_emailController.text.isNotEmpty) {
+    if (_emailController.text.trim().isNotEmpty) {
       await ref
           .read(providerOfForgotPasswordNotifier.notifier)
           .forgotPassword(
@@ -88,6 +88,8 @@ class _EchoForgetPasswordScreenState
         showAlertMessage(context, "Password reset link sent to your email");
       });
       _emailController.clear();
+    } else {
+      showAlertMessage(context, "Please enter your email address");
     }
   }
 }
