@@ -169,6 +169,4 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
       },
     );
   }
-
-  login() {}
 }

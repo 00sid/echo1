@@ -33,6 +33,17 @@ class _EchoForgetPasswordScreenState
 
   PreferredSizeWidget _headerBuilder() {
     return AppBar(
+      leading: Center(
+        child: PeamanRoundIconButton(
+          padding: EdgeInsets.all(7.w),
+          onPressed: context.pop,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            size: 16.w,
+            color: AppColor.white,
+          ),
+        ),
+      ),
       title: PeamanText.heading4(
         "Forgot Password",
         style: GoogleFonts.caveat().copyWith(color: AppColor.white),

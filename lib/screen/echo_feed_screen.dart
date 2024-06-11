@@ -1,5 +1,6 @@
 import 'package:echo1/component/story_profile_box.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
+import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
@@ -20,6 +21,16 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
           style: GoogleFonts.caveat(),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const EchoOnboardingScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
           Center(
             child: PeamanRoundIconButton(
               padding: EdgeInsets.all(7.w),

@@ -33,7 +33,6 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     final usersAsyncValue = ref.watch(providerOfUsers);
-    print(usersAsyncValue);
 
     return Scaffold(
       appBar: _appBar(),

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/providers/signup/signup_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/utils/app_color.dart';
@@ -42,9 +43,20 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     _listenToSignUpState();
+    final usersAsyncValue = ref.watch(providerOfUsers);
+    final users = usersAsyncValue.asData!.value;
+    List<String> userNames =
+        users.map((e) => e.userName!.toLowerCase()).toList();
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: PeamanText.heading4(
+          'SignUp',
+          style: GoogleFonts.caveat().copyWith(
+            color: AppColor.white,
+          ),
+        ),
         backgroundColor: AppColor.green,
         leading: Center(
           child: PeamanRoundIconButton(
@@ -53,6 +65,7 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
             icon: Icon(
               Icons.arrow_back_rounded,
               size: 16.w,
+              color: AppColor.white,
             ),
           ),
         ),
@@ -145,22 +158,32 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                           firstNameController.text.isNotEmpty &&
                           usernameController.text.isNotEmpty &&
                           emailController.text.isNotEmpty) {
-                        if (passwordController.text.trim() ==
-                            confirmPasswordController.text.trim()) {
-                          ref.read(providerOfSignUp.notifier).signUpUser(
-                                lName: lastName,
-                                fName: firstName,
-                                userName: username,
-                                email: email,
-                                password: password,
-                                confirmPassword: confirmPassword,
-                              );
-                        } else {
+                        if (userNames.contains(username.toLowerCase())) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Enter password correctly"),
+                              content: Text(
+                                "Username already exists. Please try another one.",
+                              ),
                             ),
                           );
+                        } else {
+                          if (passwordController.text.trim() ==
+                              confirmPasswordController.text.trim()) {
+                            ref.read(providerOfSignUp.notifier).signUpUser(
+                                  lName: lastName,
+                                  fName: firstName,
+                                  userName: username,
+                                  email: email,
+                                  password: password,
+                                  confirmPassword: confirmPassword,
+                                );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Enter password correctly"),
+                              ),
+                            );
+                          }
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -171,12 +194,15 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                       }
                     },
                   ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const PeamanText.subtitle1(
-                        "Already a member?",
+                        "Already a member? ",
                       ),
                       PeamanText.button(
                         "Login",
