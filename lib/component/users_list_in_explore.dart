@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
-class UsersInExplore extends ConsumerWidget {
+class UsersInExplore extends ConsumerStatefulWidget {
   const UsersInExplore({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _UsersInExploreState();
+}
+
+class _UsersInExploreState extends ConsumerState<UsersInExplore> {
+  @override
+  Widget build(BuildContext context) {
     final usersAsyncValue = ref.watch(providerOfUsers);
     final uid = ref.watch(
       providerOfLoggedInUser.select((value) => value.uid),
@@ -98,9 +103,6 @@ class UsersInExplore extends ConsumerWidget {
           fontSize: 14.0,
         ),
       ),
-      // trailing: PeamanProfileActions(
-      //   user: appUser,
-      // ),
     );
   }
 }

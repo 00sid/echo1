@@ -32,7 +32,7 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
       appBar: AppBar(),
       body: Column(
         children: [
-          _screenDescription(),
+          _screenDescription(isFollowing: isFollowing),
           const AdminList(),
           _nextButton(isFollowing: isFollowing, loggedInUserId: loggedInUserId),
         ],
@@ -40,16 +40,24 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
     );
   }
 
-  Widget _screenDescription() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: PeamanText.heading4(
-        "Follow accounts to see their posts.",
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: AppColor.green,
-        ),
-      ),
+  Widget _screenDescription({required bool isFollowing}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: isFollowing
+          ? const PeamanText.heading4(
+              "You can now continue to the app",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColor.green,
+              ),
+            )
+          : const PeamanText.heading4(
+              "Follow accounts to see their posts",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColor.green,
+              ),
+            ),
     );
   }
 

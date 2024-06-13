@@ -82,15 +82,6 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  //logo
-                  // const Center(
-                  //   child: PeamanText.heading1(
-                  //     "Signup",
-                  //   ),
-                  // ),
-
-                  //imageGetter
-
                   _profileImgBuilder(),
 
                   PeamanInput(

@@ -32,12 +32,7 @@ class _EchoMomentScreenState extends ConsumerState<EchoMomentScreen> {
             const SizedBox(
               height: double.infinity,
               width: double.infinity,
-              // decoration: const BoxDecoration(
-              //   image: DecorationImage(
-              //     image: AssetImage("assets/images/zoro.jpeg"),
-              //     fit: BoxFit.fill,
-              //   ),
-              // ),
+              //story image
               child: ShowImage(imagePath: "assets/images/zoro1.jpg"),
             ),
             Column(
