@@ -1,11 +1,12 @@
 import 'dart:typed_data';
-
+import 'package:echo1/features/moment/state/moment_post/model/moment_result.dart';
+import 'package:echo1/features/moment/state/moment_post/providers/moment_state_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
+// ignore: must_be_immutable
 class EchoCreateMomentScreen extends ConsumerStatefulWidget {
   Uint8List file;
   EchoCreateMomentScreen({super.key, required this.file});
@@ -87,7 +88,9 @@ class _EchoCreateMomentScreenState
         child: PeamanRoundIconButton(
           bgColor: AppColor.green,
           padding: EdgeInsets.all(20.w),
-          onPressed: context.pop,
+          onPressed: () {
+            uploadMoment();
+          },
           icon: Icon(
             Icons.arrow_forward_ios_sharp,
             size: 24.w,
@@ -95,4 +98,32 @@ class _EchoCreateMomentScreenState
           ),
         ),
       );
+  uploadMoment() async {
+    ref.read(providerOfMomentState.notifier).postMoment(
+          userId: ref.watch(providerOfLoggedInUser).uid!,
+          file: widget.file,
+          createdAt: DateTime.now(),
+        );
+
+    if (ref.watch(providerOfMomentState).authResult == MomentResult.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: AppColor.green,
+          content: Text('Moment created successfully'),
+        ),
+      );
+    } else if (ref.watch(providerOfMomentState).authResult ==
+        MomentResult.failed) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Failed to upload. Please try again.',
+          ),
+        ),
+      );
+    }
+
+    context.pop();
+  }
 }

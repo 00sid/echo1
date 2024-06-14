@@ -1,4 +1,4 @@
-import 'package:echo1/component/story_profile_box.dart';
+import 'package:echo1/features/moment/components/story_profile_box.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:flutter/material.dart';

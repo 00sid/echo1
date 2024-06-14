@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:echo1/screen/echo_create_moment_screen.dart';
+import 'package:echo1/features/moment/screens/echo_create_moment_screen.dart';
 import 'package:echo1/screen/echo_story_page.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
@@ -169,12 +169,11 @@ class _MomentProfileBoxState extends ConsumerState<MomentProfileBox> {
                   );
                   if (file != null) {
                     // ignore: use_build_context_synchronously
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EchoCreateMomentScreen(
-                          file: file,
-                        ),
+                        builder: (context) =>
+                            EchoCreateMomentScreen(file: file),
                       ),
                     );
                   }
@@ -201,12 +200,11 @@ class _MomentProfileBoxState extends ConsumerState<MomentProfileBox> {
 
                   if (file != null) {
                     // ignore: use_build_context_synchronously
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EchoCreateMomentScreen(
-                          file: file,
-                        ),
+                        builder: (context) =>
+                            EchoCreateMomentScreen(file: file),
                       ),
                     );
                   }
