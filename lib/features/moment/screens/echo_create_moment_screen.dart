@@ -40,11 +40,6 @@ class _EchoCreateMomentScreenState
   }
 
   Widget _image() {
-    // return const ShowImage(
-
-    //   imagePath: "assets/images/zoro1.jpg",
-    //   fitType: FitType.contained,
-    // );
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -98,7 +93,7 @@ class _EchoCreateMomentScreenState
           ),
         ),
       );
-  uploadMoment() async {
+  uploadMoment() {
     ref.read(providerOfMomentState.notifier).postMoment(
           userId: ref.watch(providerOfLoggedInUser).uid!,
           file: widget.file,

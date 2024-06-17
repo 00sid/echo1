@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:echo1/features/moment/screens/echo_create_moment_screen.dart';
-import 'package:echo1/screen/echo_story_page.dart';
+import 'package:echo1/features/moment/screens/story_page.dart';
+import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,71 +10,80 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 // ignore: must_be_immutable
-class MomentProfileBox extends ConsumerStatefulWidget {
-  final int index;
-  bool isSeen;
-  MomentProfileBox({super.key, required this.index, this.isSeen = true});
+class StoryListBox extends ConsumerStatefulWidget {
+  final UserWithMomentModel userWithMoment;
+
+  const StoryListBox({
+    super.key,
+    required this.userWithMoment,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _MomentProfileBoxState();
 }
 
-class _MomentProfileBoxState extends ConsumerState<MomentProfileBox> {
+class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
+  bool isCurrentUser = false;
   @override
   Widget build(BuildContext context) {
-    final getProfileImage = ref.watch(providerOfLoggedInUser).photo;
+    final getCurrentUserId = ref.watch(providerOfLoggedInUser).uid;
+    if (widget.userWithMoment.user.uid == getCurrentUserId) {
+      isCurrentUser = true;
+    }
+
     return Column(
       children: [
         Stack(
           children: [
             GestureDetector(
               onTapDown: (details) {
-                _navigateToDetailScreen(context, details.globalPosition);
+                if (widget.userWithMoment.moments.isNull) {
+                  return;
+                } else {
+                  _navigateToDetailScreen(context, details.globalPosition);
+                }
               },
               child: Container(
-                margin:
-                    EdgeInsets.only(right: 5, left: widget.index == 0 ? 10 : 0),
+                margin: EdgeInsets.only(
+                  right: 5,
+                  left: isCurrentUser ? 10 : 0,
+                ),
                 height: 70,
                 width: 70,
                 decoration: BoxDecoration(
-                  color: widget.index == 0 ? null : Colors.grey,
                   shape: BoxShape.circle,
-                  image: widget.index == 0
-                      ? DecorationImage(
-                          image: NetworkImage(getProfileImage!),
-                          scale: 1,
-                          fit: BoxFit.cover,
-                        )
-                      : const DecorationImage(
+                  image: widget.userWithMoment.user.photo.isNull
+                      ? const DecorationImage(
                           image: AssetImage(
                             'assets/images/avatar_unknown.png',
                             package: 'peaman_ui_components',
                           ),
+                        )
+                      : DecorationImage(
+                          image: NetworkImage(
+                            widget.userWithMoment.user.photo!,
+                          ),
+                          scale: 1,
+                          fit: BoxFit.cover,
                         ),
                   border: Border.all(
-                    color: widget.isSeen
-                        ? Colors.grey.shade600.withOpacity(0.5)
+                    color: widget.userWithMoment.isTopStorySeen.isNull ||
+                            widget.userWithMoment.isTopStorySeen!
+                        ? Colors.grey.shade500
                         : AppColor.brightGreen,
                     width: 3,
                   ),
                 ),
               ),
             ),
-            widget.index == 0
+            isCurrentUser
                 ? Positioned(
                     bottom: 0,
                     right: 0,
                     child: IconButton(
                       onPressed: () {
                         _selectImage(context);
-                        // Navigator.push(
-
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => EchoCreateMomentScreen(),
-                        //   ),
-                        // );
                       },
                       icon: const Center(
                         child: Icon(
@@ -88,7 +98,7 @@ class _MomentProfileBoxState extends ConsumerState<MomentProfileBox> {
           ],
         ),
         Text(
-          widget.index == 0 ? "Your Story" : "User ${widget.index}",
+          isCurrentUser ? "Your Story" : widget.userWithMoment.user.userName!,
           style: const TextStyle(
             fontSize: 12,
           ),
@@ -97,14 +107,15 @@ class _MomentProfileBoxState extends ConsumerState<MomentProfileBox> {
     );
   }
 
-  void _navigateToDetailScreen(BuildContext context, Offset tapPosition) {
+  void _navigateToDetailScreen(
+    BuildContext context,
+    Offset tapPosition,
+  ) {
     Navigator.push(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            EchoMomentScreen(
-          index: widget.index,
-        ),
+            StoryPage(userWithMoment: widget.userWithMoment),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final screenSize = MediaQuery.of(context).size;
 

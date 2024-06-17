@@ -1,4 +1,4 @@
-import 'package:echo1/features/moment/components/story_profile_box.dart';
+import 'package:echo1/features/moment/components/story_list.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:flutter/material.dart';
@@ -83,17 +83,7 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
   Widget _momentList() {
     return SizedBox(
       height: 100.h,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: 8,
-          itemBuilder: (context, index) {
-            return MomentProfileBox(index: index);
-          },
-        ),
-      ),
+      child: StoryList(),
     );
   }
 

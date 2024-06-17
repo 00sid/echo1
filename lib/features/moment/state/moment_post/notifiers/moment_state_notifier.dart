@@ -7,13 +7,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class MomentStateNotifier extends StateNotifier<MomentState> {
   final _momentDb = MomentDb();
   MomentStateNotifier() : super(const MomentState.unknown());
-  Future<void> postMoment(
-      {required String userId,
-      required Uint8List file,
-      required DateTime createdAt}) async {
+  Future<void> postMoment({
+    required String userId,
+    required Uint8List file,
+    required DateTime createdAt,
+  }) async {
     state = state.copiedWithIsLoading(true);
     final result = await _momentDb.postMoment(
-        userId: userId, file: file, createdAt: createdAt);
+      userId: userId,
+      file: file,
+      createdAt: createdAt,
+    );
     state = MomentState(
       authResult: result,
       isLoading: false,

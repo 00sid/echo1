@@ -4,6 +4,7 @@ import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 class EchoOnboardingScreen extends ConsumerStatefulWidget {
