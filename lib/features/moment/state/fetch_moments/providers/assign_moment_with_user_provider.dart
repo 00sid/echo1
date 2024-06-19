@@ -102,6 +102,13 @@ final providerOfAssigningMomentWithUser =
         userWithSortedMomentList[i].isTopStorySeen = false;
       }
     }
+    //sorting moment according to  isSeen
+    // for (int i = 1; i < userWithSortedMomentList.length; i++) {
+    //   if (userWithSortedMomentList[i].isTopStorySeen!) {
+    //     UserWithMomentModel user = userWithSortedMomentList.removeAt(i);
+    //     userWithSortedMomentList.add(user);
+    //   }
+    // }
 
     return userWithSortedMomentList;
   }

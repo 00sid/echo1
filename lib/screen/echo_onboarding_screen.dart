@@ -33,42 +33,59 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
       appBar: AppBar(),
       body: Column(
         children: [
-          _screenDescription(isFollowing: isFollowing),
+          _screenDescription(
+            isFollowing: isFollowing,
+            context: context,
+          ),
           const AdminList(),
-          _nextButton(isFollowing: isFollowing, loggedInUserId: loggedInUserId),
+          _nextButton(
+              isFollowing: isFollowing,
+              loggedInUserId: loggedInUserId,
+              context: context),
         ],
       ),
     );
   }
 
-  Widget _screenDescription({required bool isFollowing}) {
+  Widget _screenDescription(
+      {required bool isFollowing, required BuildContext context}) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: isFollowing
-          ? const PeamanText.heading4(
+          ? PeamanText.heading4(
               "You can now continue to the app",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppColor.green,
+                color: isDarkMode ? AppColor.white : AppColor.green,
               ),
             )
-          : const PeamanText.heading4(
+          : PeamanText.heading4(
               "Follow accounts to see their posts",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppColor.green,
+                color: isDarkMode ? AppColor.white : AppColor.green,
               ),
             ),
     );
   }
 
   Widget _nextButton(
-      {required bool isFollowing, required String? loggedInUserId}) {
+      {required bool isFollowing,
+      required String? loggedInUserId,
+      required BuildContext context}) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: isFollowing
           ? PeamanButton.filled(
+              color: isDarkMode ? AppColor.white : AppColor.green,
               value: "Next",
+              valueStyle: TextStyle(
+                color: isDarkMode ? AppColor.green : AppColor.white,
+              ),
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('users')
@@ -79,6 +96,9 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
             )
           : PeamanButton.bordered(
               value: "Next",
+              valueStyle: TextStyle(
+                color: AppColor.green,
+              ),
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

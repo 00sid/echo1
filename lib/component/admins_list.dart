@@ -30,13 +30,19 @@ class _AdminListState extends ConsumerState<AdminList> {
           final bool isFollowing = followingList!
               .where((element) => element.uid == user.uid)
               .isNotEmpty;
-          return _userTile(user: user, isFollowing: isFollowing);
+          return _userTile(
+              user: user, isFollowing: isFollowing, context: context);
         },
       ),
     );
   }
 
-  Widget _userTile({required PeamanUser user, required isFollowing}) {
+  Widget _userTile(
+      {required PeamanUser user,
+      required isFollowing,
+      required BuildContext context}) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return ListTile(
       leading: Stack(
         alignment: Alignment.bottomRight,
@@ -60,27 +66,27 @@ class _AdminListState extends ConsumerState<AdminList> {
       ),
       title: Text(
         user.name!,
-        style: const TextStyle(
-          color: AppColor.black,
-          fontSize: 16.0,
+        style: TextStyle(
+          color: isDarkMode ? AppColor.white : AppColor.black,
+          fontSize: 14.w,
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: Text(
         "@${user.userName!}",
-        style: const TextStyle(
-          color: AppColor.black,
-          fontSize: 14.0,
+        style: TextStyle(
+          color: isDarkMode ? AppColor.white : AppColor.black,
+          fontSize: 12.w,
         ),
       ),
       trailing: isFollowing
           ? PeamanButton.bordered(
-              width: 100,
+              width: isDarkMode ? 110 : 100,
               value: 'Following',
               onPressed: () {},
             )
           : PeamanButton.filled(
-              width: 100,
+              width: isDarkMode ? 110 : 100,
               value: 'Follow',
               color: AppColor.white,
               onPressed: () {
