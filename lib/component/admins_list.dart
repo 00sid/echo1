@@ -41,8 +41,6 @@ class _AdminListState extends ConsumerState<AdminList> {
       {required PeamanUser user,
       required isFollowing,
       required BuildContext context}) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return ListTile(
       leading: Stack(
         alignment: Alignment.bottomRight,
@@ -67,7 +65,7 @@ class _AdminListState extends ConsumerState<AdminList> {
       title: Text(
         user.name!,
         style: TextStyle(
-          color: isDarkMode ? AppColor.white : AppColor.black,
+          color: context.isDarkMode ? AppColor.white : AppColor.black,
           fontSize: 14.w,
           fontWeight: FontWeight.bold,
         ),
@@ -75,18 +73,18 @@ class _AdminListState extends ConsumerState<AdminList> {
       subtitle: Text(
         "@${user.userName!}",
         style: TextStyle(
-          color: isDarkMode ? AppColor.white : AppColor.black,
+          color: context.isDarkMode ? AppColor.white : AppColor.black,
           fontSize: 12.w,
         ),
       ),
       trailing: isFollowing
           ? PeamanButton.bordered(
-              width: isDarkMode ? 110 : 100,
+              width: context.isDarkMode ? 110 : 100,
               value: 'Following',
               onPressed: () {},
             )
           : PeamanButton.filled(
-              width: isDarkMode ? 110 : 100,
+              width: context.isDarkMode ? 110 : 100,
               value: 'Follow',
               color: AppColor.white,
               onPressed: () {

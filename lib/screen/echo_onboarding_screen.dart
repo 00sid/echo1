@@ -49,8 +49,6 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
 
   Widget _screenDescription(
       {required bool isFollowing, required BuildContext context}) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: isFollowing
@@ -58,14 +56,14 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
               "You can now continue to the app",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isDarkMode ? AppColor.white : AppColor.green,
+                color: context.isDarkMode ? AppColor.white : AppColor.green,
               ),
             )
           : PeamanText.heading4(
               "Follow accounts to see their posts",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isDarkMode ? AppColor.white : AppColor.green,
+                color: context.isDarkMode ? AppColor.white : AppColor.green,
               ),
             ),
     );
@@ -75,16 +73,14 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
       {required bool isFollowing,
       required String? loggedInUserId,
       required BuildContext context}) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: isFollowing
           ? PeamanButton.filled(
-              color: isDarkMode ? AppColor.white : AppColor.green,
+              color: context.isDarkMode ? AppColor.white : AppColor.green,
               value: "Next",
               valueStyle: TextStyle(
-                color: isDarkMode ? AppColor.green : AppColor.white,
+                color: context.isDarkMode ? AppColor.green : AppColor.white,
               ),
               onPressed: () {
                 FirebaseFirestore.instance
