@@ -38,12 +38,12 @@ class _UsersInExploreState extends ConsumerState<UsersInExplore> {
                       },
                       child: Container(
                         height: 73.0,
-                        color: AppColor.white,
                         child: Column(
                           children: [
                             //user tile
                             _userTile(
                               user: users[index],
+                              context: context,
                             ),
                             Divider(
                               color: Colors.grey.shade400,
@@ -66,7 +66,7 @@ class _UsersInExploreState extends ConsumerState<UsersInExplore> {
     );
   }
 
-  Widget _userTile({required PeamanUser user}) {
+  Widget _userTile({required PeamanUser user, required BuildContext context}) {
     return ListTile(
       leading: Stack(
         alignment: Alignment.bottomRight,
@@ -90,16 +90,16 @@ class _UsersInExploreState extends ConsumerState<UsersInExplore> {
       ),
       title: Text(
         user.userName!,
-        style: const TextStyle(
-          color: AppColor.black,
+        style: TextStyle(
+          color: context.isDarkMode ? AppColor.white : AppColor.black,
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: Text(
         user.name!,
-        style: const TextStyle(
-          color: AppColor.black,
+        style: TextStyle(
+          color: context.isDarkMode ? AppColor.white : AppColor.black,
           fontSize: 14.0,
         ),
       ),

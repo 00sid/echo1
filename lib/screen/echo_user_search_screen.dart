@@ -70,6 +70,7 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
                           },
                           child: _userTile(
                             user: filteredUsers[index],
+                            context: context,
                           ),
                         );
                       },
@@ -113,7 +114,7 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
     );
   }
 
-  Widget _userTile({required PeamanUser user}) {
+  Widget _userTile({required PeamanUser user, required BuildContext context}) {
     return ListTile(
       leading: Stack(
         alignment: Alignment.bottomRight,
@@ -137,16 +138,16 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
       ),
       title: Text(
         user.userName!,
-        style: const TextStyle(
-          color: AppColor.black,
+        style: TextStyle(
+          color: context.isDarkMode ? AppColor.white : AppColor.black,
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: Text(
         user.name!,
-        style: const TextStyle(
-          color: AppColor.black,
+        style: TextStyle(
+          color: context.isDarkMode ? AppColor.white : AppColor.black,
           fontSize: 14.0,
         ),
       ),
