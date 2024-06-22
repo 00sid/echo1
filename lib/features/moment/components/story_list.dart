@@ -1,6 +1,5 @@
 import 'package:echo1/features/moment/components/story_list_box.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
-import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';

@@ -1,10 +1,8 @@
-import 'package:echo1/component/verified_icon.dart';
 import 'package:echo1/features/moment/components/profile_widget.dart';
 import 'package:echo1/features/moment/state/fetch_moments/backend/update_seen.dart';
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
 import 'package:echo1/features/moment/state/moment_info/models/moment_model.dart';
-import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_time_ago/get_time_ago.dart';
@@ -108,7 +106,7 @@ class _StoryWidgetState extends ConsumerState<StoryWidget> {
           url: moment.imageUrl,
           controller: controller,
           duration: const Duration(
-            milliseconds: 2500,
+            milliseconds: 3500,
           ),
           imageFit: BoxFit.contain,
         ),

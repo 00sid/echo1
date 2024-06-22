@@ -13,61 +13,71 @@ class ProfileWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final getCurrentUserId = ref.watch(providerOfLoggedInUser).uid;
     final isCurrentUser = user.uid == getCurrentUserId;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 15,
-        ),
-        Row(
-          children: [
-            const SizedBox(
-              width: 5,
-            ),
-            //profile image
-            user.photo != null
-                ? CircleAvatar(
-                    radius: 15,
-                    backgroundImage: NetworkImage(user.photo!),
-                  )
-                : const CircleAvatar(
-                    radius: 15,
-                    backgroundImage: AssetImage(
-                      'assets/images/avatar_unknown.png',
-                      package: 'peaman_ui_components',
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          PeamanProfileScreen.route,
+          arguments: PeamanProfileScreenArgs(
+            userId: user.uid!,
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 5,
+              ),
+              //profile image
+              user.photo != null
+                  ? CircleAvatar(
+                      radius: 15,
+                      backgroundImage: NetworkImage(user.photo!),
+                    )
+                  : const CircleAvatar(
+                      radius: 15,
+                      backgroundImage: AssetImage(
+                        'assets/images/avatar_unknown.png',
+                        package: 'peaman_ui_components',
+                      ),
                     ),
-                  ),
-            const SizedBox(
-              width: 15,
-            ),
-            //username
-            Text(
-              isCurrentUser ? "Your Story" : user.userName!,
-              style: const TextStyle(
-                color: AppColor.white,
-                fontSize: 16,
-                decoration: TextDecoration.none,
+              const SizedBox(
+                width: 15,
               ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            user.isVerified ? const VerifiedIcon() : const SizedBox(),
-            const SizedBox(
-              width: 5,
-            ),
-            //date and time ago
-            Text(
-              date,
-              style: const TextStyle(
-                color: AppColor.white,
-                fontSize: 16,
-                decoration: TextDecoration.none,
+              //username
+              Text(
+                isCurrentUser ? "Your Story" : user.userName!,
+                style: const TextStyle(
+                  color: AppColor.white,
+                  fontSize: 16,
+                  decoration: TextDecoration.none,
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+              const SizedBox(
+                width: 5,
+              ),
+              user.isVerified ? const VerifiedIcon() : const SizedBox(),
+              const SizedBox(
+                width: 5,
+              ),
+              //date and time ago
+              Text(
+                date,
+                style: const TextStyle(
+                  color: AppColor.white,
+                  fontSize: 16,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

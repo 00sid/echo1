@@ -68,8 +68,9 @@ class _EchoCreateMomentScreenState
           PeamanText.heading4(
             'Create Moment',
             style: GoogleFonts.caveat().copyWith(
-              color: AppColor.white.withOpacity(0.8),
+              color: AppColor.black,
               fontWeight: FontWeight.bold,
+              fontSize: 38,
             ),
           ),
         ],

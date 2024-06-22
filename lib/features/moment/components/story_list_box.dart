@@ -151,25 +151,27 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: PeamanText.heading4(
-              'Select Image',
-              style: GoogleFonts.caveat().copyWith(
-                color: Colors.black,
+            title: Center(
+              child: PeamanText.heading4(
+                'Select Image',
+                style: GoogleFonts.caveat().copyWith(
+                  color: context.isDarkMode ? AppColor.white : Colors.black,
+                ),
               ),
             ),
             children: [
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.camera_alt_rounded,
-                      color: Colors.black,
+                      color: context.isDarkMode ? AppColor.white : Colors.black,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    Text(
+                    const Text(
                       "Take a photo",
                     ),
                   ],
@@ -192,16 +194,16 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
               ),
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.photo_rounded,
-                      color: Colors.black,
+                      color: context.isDarkMode ? AppColor.white : Colors.black,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    Text(
+                    const Text(
                       "Choose from gallery",
                     ),
                   ],
@@ -223,16 +225,16 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
               ),
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.cancel_rounded,
-                      color: Colors.black,
+                      color: context.isDarkMode ? AppColor.white : Colors.black,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    Text(
+                    const Text(
                       "Cancel",
                     ),
                   ],
