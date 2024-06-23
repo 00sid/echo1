@@ -27,6 +27,7 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
     required final String email,
     required final String password,
     required final String confirmPassword,
+    final String? photo,
   }) async {
     final user = PeamanUser(
       name: '$fName $lName',
@@ -35,6 +36,7 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
       country: "",
       bio: "",
       dob: 0,
+      photo: photo,
       gender: PeamanGender.unknown,
     );
 

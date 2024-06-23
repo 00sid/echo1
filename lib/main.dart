@@ -1,5 +1,6 @@
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/screen/echo_login_screen.dart';
+import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:echo1/screen/echo_splash_screen.dart';
 import 'package:echo1/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ void main() async {
               settings,
               const PeamanWrapper(
                 loginScreen: EchoLoginScreen(),
-                skipOnboarding: true,
+                onboardingScreen: EchoOnboardingScreen(),
                 splashScreen: EchoSplashScreen(),
                 homeScreen: EchoFeedScreen(),
               ),

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:echo1/component/admins_list.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
+import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
@@ -30,7 +32,9 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
         adminList.every((admin) => followingUids.contains(admin.uid));
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         children: [
           _screenDescription(
@@ -82,17 +86,23 @@ class _EchoOnboardingScreenState extends ConsumerState<EchoOnboardingScreen> {
               valueStyle: TextStyle(
                 color: context.isDarkMode ? AppColor.green : AppColor.white,
               ),
-              onPressed: () {
-                FirebaseFirestore.instance
+              onPressed: () async {
+                await FirebaseFirestore.instance
                     .collection('users')
                     .doc(loggedInUserId)
-                    .update({'is_onboarding_completed': true}).then(
-                        (value) => {});
+                    .update({'is_onboarding_completed': true}).then((value) => {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              PageTransition(
+                                  child: const EchoFeedScreen(),
+                                  type: PageTransitionType.fade),
+                              (route) => false)
+                        });
               },
             )
           : PeamanButton.bordered(
               value: "Next",
-              valueStyle: TextStyle(
+              valueStyle: const TextStyle(
                 color: AppColor.green,
               ),
               onPressed: () {

@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/providers/signup/signup_provider.dart';
-import 'package:echo1/screen/echo_feed_screen.dart';
+import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:echo1/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
-  Uint8List? _image;
+  XFile? _image;
 
   @override
   void dispose() {
@@ -135,7 +136,7 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                     valueStyle: const TextStyle(
                       color: AppColor.white,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       final lastName = lastNameController.text.trim();
                       final firstName = firstNameController.text.trim();
                       final username = usernameController.text.trim();
@@ -160,12 +161,36 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                         } else {
                           if (passwordController.text.trim() ==
                               confirmPasswordController.text.trim()) {
+                            final storageRepository = ref.read(
+                              providerOfPeamanStorageRepository,
+                            );
+                            final randomId = PeamanReferenceHelper.ref
+                                .collection('random')
+                                .doc()
+                                .id;
+                            final fileName = '$randomId.jpg';
+
+                            String? image;
+                            if (_image != null) {
+                              final imageState =
+                                  await storageRepository.uploadFile(
+                                path: '/users/$randomId/profile_image',
+                                fileName: fileName,
+                                file: File(_image!.path),
+                              );
+                              image = imageState.when(
+                                (success) => success,
+                                (failure) => null,
+                              );
+                            }
+
                             ref.read(providerOfSignUp.notifier).signUpUser(
                                   lName: lastName,
                                   fName: firstName,
                                   userName: username,
                                   email: email,
                                   password: password,
+                                  photo: image,
                                   confirmPassword: confirmPassword,
                                 );
                           } else {
@@ -233,7 +258,7 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
               Navigator.pushAndRemoveUntil(
                   context,
                   PageTransition(
-                      child: const EchoFeedScreen(),
+                      child: const EchoOnboardingScreen(),
                       type: PageTransitionType.fade),
                   (route) => false);
             },
@@ -250,7 +275,12 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
       child: Stack(
         children: [
           _image != null
-              ? CircleAvatar(radius: 64, backgroundImage: MemoryImage(_image!))
+              ? CircleAvatar(
+                  radius: 64,
+                  backgroundImage: FileImage(
+                    File(_image!.path),
+                  ),
+                )
               : const CircleAvatar(
                   radius: 64,
                   backgroundImage: AssetImage(
@@ -271,21 +301,18 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    final im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
   }
 
-  pickImage(ImageSource source) async {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final ImagePicker _imagePicker = ImagePicker();
-    // ignore: no_leading_underscores_for_local_identifiers
-    XFile? _file = await _imagePicker.pickImage(source: source);
-    if (_file != null) {
-      return await _file.readAsBytes();
+  Future<XFile?> pickImage(ImageSource source) async {
+    final imagePicker = ImagePicker();
+    final file = await imagePicker.pickImage(source: source);
+    if (file != null) {
+      return file;
     }
-    // ignore: avoid_print
-    print("NO image selected");
+    return null;
   }
 }

@@ -1,6 +1,8 @@
+import 'package:echo1/component/echo_intermediate_component.dart';
 import 'package:echo1/providers/login/login_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/screen/echo_forgot_password_screen.dart';
+import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:echo1/screen/echo_signup_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +77,9 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
                       orElse: () => false,
                     ),
                 value: 'Login',
+                valueStyle: TextStyle(
+                  color: context.isDarkMode ? AppColor.black : AppColor.black,
+                ),
                 onPressed: () async {
                   final email = emailController.text.trim();
                   final password = passwordController.text.trim();
@@ -156,12 +161,27 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
         if (previous != next) {
           next.maybeWhen(
             success: (_) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  PageTransition(
-                      child: const EchoFeedScreen(),
-                      type: PageTransitionType.fade),
-                  (route) => false);
+              // ref.watch(providerOfLoggedInUser).isOnboardingCompleted
+              //     ? Navigator.pushAndRemoveUntil(
+              //         context,
+              //         PageTransition(
+              //             child: const EchoFeedScreen(),
+              //             type: PageTransitionType.fade),
+              //         (route) => false)
+              //     : Navigator.push(
+              //         context,
+              //         PageTransition(
+              //           child: const EchoOnboardingScreen(),
+              //           type: PageTransitionType.fade,
+              //         ),
+              //       );
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: EchoIntermediateScreen(),
+                  type: PageTransitionType.fade,
+                ),
+              );
             },
             orElse: () {},
           );
