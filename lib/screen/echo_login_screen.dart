@@ -1,4 +1,3 @@
-import 'package:echo1/component/echo_intermediate_component.dart';
 import 'package:echo1/providers/login/login_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/screen/echo_forgot_password_screen.dart';
@@ -178,12 +177,36 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
               Navigator.push(
                 context,
                 PageTransition(
-                  child: EchoIntermediateScreen(),
+                  child: const EchoFeedScreen(),
                   type: PageTransitionType.fade,
                 ),
               );
             },
-            orElse: () {},
+            orElse: () {
+              if (emailController.text.trim().isEmpty &&
+                  passwordController.text.trim().isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Please fill all the fields."),
+                    backgroundColor: AppColor.green,
+                  ),
+                );
+              } else if (!emailController.text.trim().endsWith("@gmail.com")) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Please enter email correctly."),
+                    backgroundColor: AppColor.green,
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Please enter valid email and password"),
+                    backgroundColor: AppColor.green,
+                  ),
+                );
+              }
+            },
           );
         }
       },

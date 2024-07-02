@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:echo1/component/verified_icon.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/utils/app_color.dart';
@@ -13,6 +14,7 @@ class AdminList extends ConsumerStatefulWidget {
 }
 
 class _AdminListState extends ConsumerState<AdminList> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     final loggedInUserId = ref.watch(providerOfLoggedInUser).uid;
@@ -94,7 +96,7 @@ class _AdminListState extends ConsumerState<AdminList> {
     );
   }
 
-  void _onPressedFollow({required PeamanUser user}) {
+  void _onPressedFollow({required PeamanUser user}) async {
     ref.watch(providerOfPeamanUser.notifier).performFollowAction(
           userId: user.uid!,
           followSuccessLogMessage:
@@ -106,5 +108,29 @@ class _AdminListState extends ConsumerState<AdminList> {
               'Follow request has been accepted',
           followBackSuccessLogMessage: '${user.name} has been followed',
         );
+    // ref
+    //     .watch(
+    //       providerOfPeamanUser.notifier,
+    //     )
+    //     .acceptFollowRequest(
+    //       userId: user.uid!,
+    //     );
+    ref.watch(providerOfPeamanUser.notifier).followBackUser(userId: user.uid!);
+    await _firestore
+        .collection('users')
+        .doc(ref.read(providerOfLoggedInUser).uid)
+        .collection("sent_follow_requests")
+        .doc(user.uid)
+        .update({
+      'is_accepted': true,
+    });
+    await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection("received_follow_requests")
+        .doc(ref.read(providerOfLoggedInUser).uid)
+        .update({
+      'is_accepted': true,
+    });
   }
 }

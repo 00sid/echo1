@@ -13,7 +13,7 @@ void main() async {
     PeamanApp(
       title: "Echo",
       theme: AppTheme.lightColorPalette,
-      darkTheme: ThemeData.dark(),
+      darkTheme: AppTheme.darkColorPalette,
       onGenerateRoute: (settings, def) {
         switch (settings.name) {
           case PeamanWrapper.route:

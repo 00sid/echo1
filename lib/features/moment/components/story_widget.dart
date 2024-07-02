@@ -88,7 +88,7 @@ class _StoryWidgetState extends ConsumerState<StoryWidget> {
         ),
         //profile image
         Positioned(
-          top: 30.h,
+          top: 40.h,
           left: 10.w,
           child: ProfileWidget(
             date: date,

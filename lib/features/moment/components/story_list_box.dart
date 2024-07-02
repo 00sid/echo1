@@ -70,7 +70,7 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
                   border: Border.all(
                     color: widget.userWithMoment.isTopStorySeen.isNull ||
                             widget.userWithMoment.isTopStorySeen!
-                        ? Colors.grey.shade500
+                        ? AppColor.green
                         : AppColor.brightGreen,
                     width: 3,
                   ),
@@ -81,6 +81,7 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
                 ? Positioned(
                     bottom: 0,
                     right: 0,
+                    // left: 20,
                     child: IconButton(
                       onPressed: () {
                         _selectImage(context);
@@ -98,10 +99,11 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
           ],
         ),
         Text(
-          isCurrentUser ? "Your Story" : widget.userWithMoment.user.userName!,
+          isCurrentUser ? "Your Moment" : widget.userWithMoment.user.userName!,
           style: const TextStyle(
             fontSize: 12,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

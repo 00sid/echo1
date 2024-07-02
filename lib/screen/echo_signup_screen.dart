@@ -45,7 +45,14 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
   Widget build(BuildContext context) {
     _listenToSignUpState();
     final usersAsyncValue = ref.watch(providerOfUsers);
-    final users = usersAsyncValue.asData!.value;
+    // final users = usersAsyncValue.asData!.value;
+    final users = usersAsyncValue.when(data: (data) {
+      return data;
+    }, error: (error, stack) {
+      return [];
+    }, loading: () {
+      return [];
+    }) as List<PeamanUser>;
     List<String> userNames =
         users.map((e) => e.userName!.toLowerCase()).toList();
 
@@ -219,12 +226,17 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                     children: [
                       const PeamanText.subtitle1(
                         "Already a member? ",
+                        style: TextStyle(
+                          color: AppColor.green,
+                          fontSize: 16,
+                        ),
                       ),
                       PeamanText.button(
                         "Login",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: AppColor.green,
                         ),
                         onPressed: () {
                           Navigator.pop(context);

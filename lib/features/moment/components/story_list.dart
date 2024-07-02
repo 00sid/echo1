@@ -19,7 +19,8 @@ class _MomentListState extends ConsumerState<StoryList> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListView.builder(
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
+        reverse: true,
         physics: const AlwaysScrollableScrollPhysics(),
         itemCount: usersWithMomentList.length,
         itemBuilder: (context, index) {

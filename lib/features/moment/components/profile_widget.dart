@@ -51,7 +51,7 @@ class ProfileWidget extends ConsumerWidget {
               ),
               //username
               Text(
-                isCurrentUser ? "Your Story" : user.userName!,
+                isCurrentUser ? "Your Moment" : user.userName!,
                 style: const TextStyle(
                   color: AppColor.white,
                   fontSize: 16,

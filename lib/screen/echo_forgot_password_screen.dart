@@ -27,6 +27,7 @@ class _EchoForgetPasswordScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _headerBuilder(),
+      backgroundColor: context.isDarkMode ? AppColor.white : AppColor.white,
       body: _bodyBuilder(),
     );
   }

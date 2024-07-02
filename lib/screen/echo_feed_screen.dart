@@ -59,10 +59,16 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
         onRefresh: () async => ref.invalidate(
           providerOfPeamanTimelineFeedsFuture,
         ),
-        child: Column(
+        child: Row(
           children: [
-            _momentList(),
-            _feedList(),
+            Expanded(
+              flex: 1,
+              child: _momentList(),
+            ),
+            Expanded(
+              flex: 5,
+              child: _feedList(),
+            ),
           ],
         ),
       );
@@ -71,7 +77,6 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
 
   Widget _momentList() {
     return SizedBox(
-      height: 100.h,
       child: StoryList(),
     );
   }

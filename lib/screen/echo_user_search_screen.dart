@@ -35,7 +35,7 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
     final usersAsyncValue = ref.watch(providerOfUsers);
 
     return Scaffold(
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: usersAsyncValue.when(
         data: (users) {
           final filteredUsers = users
@@ -88,7 +88,7 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       leading: Center(
         child: PeamanRoundIconButton(
@@ -103,9 +103,18 @@ class _EchoUserSearchScreenState extends ConsumerState<ConsumerStatefulWidget> {
       title: TextField(
         controller: _searchController,
         focusNode: _focusNode,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           hintText: "Search user",
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: _searchController.text.trim().isNotEmpty
+              ? GestureDetector(
+                  onTap: () {
+                    _searchController.clear();
+                    setState(() {});
+                  },
+                  child: const Icon(Icons.clear),
+                )
+              : null,
         ),
         onChanged: (val) {
           setState(() {});
