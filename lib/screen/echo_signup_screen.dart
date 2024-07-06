@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/providers/signup/signup_provider.dart';

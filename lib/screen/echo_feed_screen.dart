@@ -1,4 +1,6 @@
 import 'package:echo1/features/moment/components/story_list.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_following_user.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
@@ -56,9 +58,12 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
       );
     }, feedsListBuilder: (context, ref) {
       return RefreshIndicator(
-        onRefresh: () async => ref.invalidate(
-          providerOfPeamanTimelineFeedsFuture,
-        ),
+        onRefresh: () async {
+          ref.invalidate(
+            providerOfPeamanTimelineFeedsFuture,
+          );
+          ref.invalidate(providerOfFetchMoment);
+        },
         child: Row(
           children: [
             Expanded(
@@ -76,7 +81,7 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
   }
 
   Widget _momentList() {
-    return SizedBox(
+    return const SizedBox(
       child: StoryList(),
     );
   }

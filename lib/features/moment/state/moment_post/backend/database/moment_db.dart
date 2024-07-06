@@ -18,7 +18,7 @@ class MomentDb {
     required DateTime createdAt,
   }) async {
     final storage = MomentStorage();
-    final momentId = Uuid().v4();
+    final momentId = const Uuid().v4();
     try {
 //get image url
       String? imageUrl = await storage.storeMomentPic(

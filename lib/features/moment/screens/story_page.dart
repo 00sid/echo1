@@ -1,5 +1,6 @@
 import 'package:echo1/features/moment/components/story_widget.dart';
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_following_user.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,12 +33,13 @@ class _StoryPageState extends ConsumerState<StoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final usersWithMomentList = ref.watch(providerOfAssigningMomentWithUser);
+    final List<UserWithMomentModel> usersWithMomentList =
+        ref.watch(providerOfMomentWithFollowingUser);
     return PageView(
       controller: controller,
       children: usersWithMomentList
           .map((user) => StoryWidget(
-                userWithMoment: user!,
+                userWithMoment: user,
                 controller: controller,
               ))
           .toList(),
@@ -45,7 +47,7 @@ class _StoryPageState extends ConsumerState<StoryPage> {
   }
 
   void getInitialPage() {
-    final usersWithMomentList = ref.watch(providerOfAssigningMomentWithUser);
+    final usersWithMomentList = ref.watch(providerOfMomentWithFollowingUser);
 
     for (int i = 0; i < usersWithMomentList.length; i++) {
       if (usersWithMomentList[i]!.user.uid == widget.userWithMoment.user.uid) {

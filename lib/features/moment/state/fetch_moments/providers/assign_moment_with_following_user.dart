@@ -1,74 +1,23 @@
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
-import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider_test.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/following_list_provider.dart';
 import 'package:echo1/features/moment/state/moment_info/models/moment_model.dart';
-import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
-final providerOfAssigningMomentWithUser =
-    Provider<List<UserWithMomentModel?>>((ref) {
-  final currentUser = ref.watch(providerOfLoggedInUser);
-  final asyncMomentList = ref.watch(providerOfFetchMoment);
-  final momentList = asyncMomentList.when(data: (moment) {
-    return moment;
-  }, error: (error, val) {
-    return null;
-  }, loading: () {
-    return null;
-  });
-  final asyncUserList = ref.watch(providerOfUsers);
-  final usersList = asyncUserList.when(data: (users) {
-    return users;
-  }, error: (error, val) {
-    return [];
-  }, loading: () {
-    return [];
-  });
-  final followingAsyncList = ref.watch(providerOfPeamanFollowingsStream);
-  final List<PeamanSubUser> followingList =
-      followingAsyncList.when(data: (following) {
-    return following;
-  }, error: (error, val) {
-    return [];
-  }, loading: () {
-    return [];
-  });
-
-  // final List<PeamanUser> followingUsersList = [];
-  // for (var user in usersList) {
-  //   for (var following in followingList) {
-  //     if (user.uid == following.uid) {
-  //       followingUsersList.add(user);
-  //     }
-  //   }
-  // }
-
-  final List<UserWithMomentModel?> userWithMomentList = [];
-
+final providerOfMomentWithFollowingUser =
+    Provider<List<UserWithMomentModel>>((ref) {
   final List<UserWithMomentModel> userWithSortedMomentList = [];
-  if (momentList.isNull) {
-    userWithSortedMomentList.add(
-      UserWithMomentModel(user: currentUser),
-    );
-    return userWithSortedMomentList;
-  } else {
-    //assigning moment with user
-    for (var user in usersList) {
-      final List<MomentModel> userMoments = [];
-      for (var moment in momentList!) {
-        if (moment.userId == user.uid) {
-          userMoments.add(moment);
-        }
-      }
-      if (userMoments.isNotEmpty) {
-        userWithMomentList.add(UserWithMomentModel(
-          user: user,
-          moments: userMoments,
-        ));
-      }
-      //assigning moment end
-    }
 
+  final currentUser = ref.watch(providerOfLoggedInUser);
+  final userWithMomentList = ref.watch(providerOfAssigningMomentWithUserTest);
+
+  final List<PeamanUser> followingUsersList =
+      ref.watch(providerOfFollowingUsers);
+
+  if (userWithMomentList.isEmpty) {
+    userWithSortedMomentList.add(UserWithMomentModel(user: currentUser));
+  } else {
     //sorting moment  currentUser to first if s/he  has moment
     for (var i = 0; i < userWithMomentList.length; i++) {
       var userWithMoment = userWithMomentList[i];
@@ -133,13 +82,13 @@ final providerOfAssigningMomentWithUser =
       }
     }
     //sorting moment according to  isSeen
-    // for (int i = 1; i < userWithSortedMomentList.length; i++) {
-    //   if (userWithSortedMomentList[i].isTopStorySeen!) {
-    //     UserWithMomentModel user = userWithSortedMomentList.removeAt(i);
-    //     userWithSortedMomentList.add(user);
-    //   }
-    // }
-
-    return userWithSortedMomentList;
+    for (int i = 1; i < userWithSortedMomentList.length - 1; i++) {
+      if (userWithSortedMomentList[i].isTopStorySeen!) {
+        UserWithMomentModel user = userWithSortedMomentList.removeAt(i);
+        userWithSortedMomentList.add(user);
+      }
+    }
   }
+
+  return userWithSortedMomentList;
 });

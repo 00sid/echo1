@@ -1,4 +1,5 @@
 import 'package:echo1/features/moment/components/story_list_box.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_following_user.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,7 @@ class StoryList extends ConsumerStatefulWidget {
 class _MomentListState extends ConsumerState<StoryList> {
   @override
   Widget build(BuildContext context) {
-    final usersWithMomentList = ref.watch(providerOfAssigningMomentWithUser);
+    final usersWithMomentList = ref.watch(providerOfMomentWithFollowingUser);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

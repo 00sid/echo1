@@ -2,7 +2,6 @@ import 'package:echo1/component/verified_icon.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 class UsersInExplore extends ConsumerStatefulWidget {
@@ -36,7 +35,7 @@ class _UsersInExploreState extends ConsumerState<UsersInExplore> {
                           ),
                         );
                       },
-                      child: Container(
+                      child: SizedBox(
                         height: 73.0,
                         child: Column(
                           children: [

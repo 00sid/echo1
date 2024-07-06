@@ -1,6 +1,7 @@
 import 'package:echo1/features/moment/components/profile_widget.dart';
 import 'package:echo1/features/moment/state/fetch_moments/backend/update_seen.dart';
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_following_user.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
 import 'package:echo1/features/moment/state/moment_info/models/moment_model.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _StoryWidgetState extends ConsumerState<StoryWidget> {
   }
 
   void handleCompleted() {
-    final usersWithMomentList = ref.watch(providerOfAssigningMomentWithUser);
+    final usersWithMomentList = ref.watch(providerOfMomentWithFollowingUser);
     widget.controller.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,

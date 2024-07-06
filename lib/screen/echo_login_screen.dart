@@ -1,7 +1,6 @@
 import 'package:echo1/providers/login/login_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/screen/echo_forgot_password_screen.dart';
-import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:echo1/screen/echo_signup_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
