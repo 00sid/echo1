@@ -1,4 +1,5 @@
 import 'package:echo1/component/verified_icon.dart';
+import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,16 @@ class _UsersInExploreState extends ConsumerState<UsersInExplore> {
                   ? const SizedBox()
                   : GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamed(
-                          PeamanProfileScreen.route,
-                          arguments: PeamanProfileScreenArgs(
-                            userId: users[index].uid!,
-                          ),
-                        );
+                        // Navigator.of(context).pushNamed(
+                        //   PeamanProfileScreen.route,
+                        //   arguments: PeamanProfileScreenArgs(
+                        //     userId: users[index].uid!,
+                        //   ),
+                        // );
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return EchoProfileScreen(user: users[index]);
+                        }));
                       },
                       child: SizedBox(
                         height: 73.0,
