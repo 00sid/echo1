@@ -1,6 +1,5 @@
 import 'package:echo1/features/moment/components/story_list.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
-import 'package:echo1/features/profile/follow-following/screen/follow_following_screen.dart';
 import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +71,11 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
             child: PeamanRoundIconButton(
               padding: EdgeInsets.all(7.w),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const FollowerFollowingScreen()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const EchoExploreScreen(),
+                  ),
+                );
               },
               icon: Icon(
                 Icons.explore,

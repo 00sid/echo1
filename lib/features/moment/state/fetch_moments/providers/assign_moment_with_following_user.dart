@@ -53,7 +53,7 @@ final providerOfMomentWithFollowingUser =
 
       List<MomentModel> seenMomentList = [];
       List<MomentModel> unseenMomentList = [];
-      for (var moment in userWithMoment!.moments!) {
+      for (var moment in (userWithMoment!.moments ?? <MomentModel>[])) {
         if (moment.seenBy.contains(currentUser.uid)) {
           seenMomentList.add(moment);
         } else {
@@ -72,13 +72,15 @@ final providerOfMomentWithFollowingUser =
       sortedMomentList = [];
     }
     for (int i = 0; i < userWithSortedMomentList.length; i++) {
-      if (userWithSortedMomentList[i]
-          .moments![0]
-          .seenBy
-          .contains(currentUser.uid)) {
-        userWithSortedMomentList[i].isTopStorySeen = true;
-      } else {
-        userWithSortedMomentList[i].isTopStorySeen = false;
+      if (userWithSortedMomentList[i].moments?.isNotEmpty ?? false) {
+        if (userWithSortedMomentList[i]
+            .moments![0]
+            .seenBy
+            .contains(currentUser.uid)) {
+          userWithSortedMomentList[i].isTopStorySeen = true;
+        } else {
+          userWithSortedMomentList[i].isTopStorySeen = false;
+        }
       }
     }
     //sorting moment according to  isSeen

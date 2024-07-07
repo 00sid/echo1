@@ -17,14 +17,14 @@ class _FollowerFollowingScreenState
     extends ConsumerState<FollowerFollowingScreen> {
   @override
   Widget build(BuildContext context) {
-    final cuurentUser = ref.watch(providerOfLoggedInUser);
+    final currentUser = ref.watch(providerOfLoggedInUser);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: PeamanAppbar(
           title: Text(
-            "@${cuurentUser.userName}",
-            style: TextStyle(
+            "@${currentUser.userName}",
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -49,14 +49,14 @@ class _FollowerFollowingScreenState
                   context.isDarkMode ? AppColor.white : AppColor.black,
               tabs: [
                 Tab(
-                  text: '${cuurentUser.followersCount} followers',
+                  text: '${currentUser.followersCount} followers',
                 ),
                 Tab(
-                  text: "${cuurentUser.followingCount} following",
+                  text: "${currentUser.followingCount} following",
                 ),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: TabBarView(
                 children: [
                   FollowersScreen(),
