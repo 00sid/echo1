@@ -39,3 +39,8 @@ class FollowingNotifier extends StateNotifier<FollowingProviderState> {
     }
   }
 }
+
+final providerOfUserFollowingNotifier =
+    StateNotifierProvider<FollowingNotifier, FollowingProviderState>(
+  (ref) => FollowingNotifier(ref: ref),
+);

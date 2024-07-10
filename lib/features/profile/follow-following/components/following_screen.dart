@@ -1,12 +1,13 @@
 import 'package:echo1/features/profile/follow-following/components/user_tile.dart';
-import 'package:echo1/features/profile/follow-following/providers/echo_following_user_provider.dart';
+import 'package:echo1/features/profile/follow-following/providers/current_user/echo_following_user_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 class FollowingsScreen extends ConsumerStatefulWidget {
-  const FollowingsScreen({super.key});
+  final PeamanUser user;
+  const FollowingsScreen({super.key, required this.user});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -18,47 +19,52 @@ class _FollowingsScreenState extends ConsumerState<FollowingsScreen> {
   @override
   Widget build(BuildContext context) {
     final allFollowingUser = ref.watch(providerOfFollowingUser);
+    final currentUser = ref.watch(providerOfLoggedInUser);
     return Scaffold(
       body: Column(
         children: [
           _searchWidget(controller: controller, context: context),
-          Expanded(
-            child: controller.text.isEmpty
-                ? ListView.builder(
-                    itemCount: allFollowingUser!.length,
-                    itemBuilder: (context, index) {
-                      return UserTile(
-                        user: allFollowingUser[index],
-                      );
-                    },
-                  )
-                : ListView.builder(
-                    itemCount: allFollowingUser!
-                        .where(
-                          (user) =>
-                              user.userName!
-                                  .toLowerCase()
-                                  .contains(controller.text.toLowerCase()) ||
-                              user.name!.toLowerCase().contains(
-                                    controller.text.toLowerCase(),
-                                  ),
+          currentUser.uid == widget.user.uid
+              ? Expanded(
+                  child: controller.text.isEmpty
+                      ? ListView.builder(
+                          itemCount: allFollowingUser!.length,
+                          itemBuilder: (context, index) {
+                            return UserTile(
+                              user: allFollowingUser[index],
+                            );
+                          },
                         )
-                        .length,
-                    itemBuilder: (context, index) {
-                      final filteredUsers = allFollowingUser.where(
-                        (user) =>
-                            user.userName!
-                                .contains(controller.text.toLowerCase()) ||
-                            user.name!.toLowerCase().contains(
-                                  controller.text.toLowerCase(),
-                                ),
-                      );
-                      return UserTile(
-                        user: filteredUsers.elementAt(index),
-                      );
-                    },
-                  ),
-          ),
+                      : ListView.builder(
+                          itemCount: allFollowingUser!
+                              .where(
+                                (user) =>
+                                    user.userName!.toLowerCase().contains(
+                                        controller.text.toLowerCase()) ||
+                                    user.name!.toLowerCase().contains(
+                                          controller.text.toLowerCase(),
+                                        ),
+                              )
+                              .toList()
+                              .length,
+                          itemBuilder: (context, index) {
+                            final filteredUsers = allFollowingUser
+                                .where(
+                                  (user) =>
+                                      user.userName!.toLowerCase().contains(
+                                          controller.text.toLowerCase()) ||
+                                      user.name!.toLowerCase().contains(
+                                            controller.text.toLowerCase(),
+                                          ),
+                                )
+                                .toList();
+                            return UserTile(
+                              user: filteredUsers[index],
+                            );
+                          },
+                        ),
+                )
+              : Container(),
         ],
       ),
     );

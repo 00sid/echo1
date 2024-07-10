@@ -45,13 +45,13 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
     _listenToSignUpState();
     final usersAsyncValue = ref.watch(providerOfUsers);
     // final users = usersAsyncValue.asData!.value;
-    final users = usersAsyncValue.when(data: (data) {
+    final List<PeamanUser> users = usersAsyncValue.when(data: (data) {
       return data;
     }, error: (error, stack) {
       return [];
     }, loading: () {
       return [];
-    }) as List<PeamanUser>;
+    });
     List<String> userNames =
         users.map((e) => e.userName!.toLowerCase()).toList();
 

@@ -1,5 +1,6 @@
 import 'package:echo1/features/moment/components/story_list.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
+import 'package:echo1/features/profile/follow-following/providers/follow_following/backend/fetch_follow_following.dart';
 import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,119 +14,144 @@ class EchoFeedScreen extends ConsumerStatefulWidget {
 }
 
 class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
+  final FetchFollowFollowingUsers _fetchFollowFollowingUsers =
+      FetchFollowFollowingUsers();
+  List<PeamanSubUser>? allUser;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(providerOfLoggedInUser);
-    return PeamanTimelineFeedsScreen(headerBuilder: (context, ref) {
-      return PeamanTimelineFeedsScreenHeader(
-        title: PeamanText.heading4(
-          'Echo',
-          style: GoogleFonts.caveat(),
-        ),
-        leading: currentUser.photo == null
-            ? Center(
-                child: GestureDetector(
-                // onTap: () => context.pushNamed(
-                //   PeamanProfileScreen.route,
-                //   arguments: PeamanProfileScreenArgs(
-                //     userId: currentUser.uid!,
-                //   ),
-                // ),
-                onTap: () {
+    print("feed screen");
+    // getData();
+    return PeamanTimelineFeedsScreen(
+      headerBuilder: (context, ref) {
+        return PeamanTimelineFeedsScreenHeader(
+          title: PeamanText.heading4(
+            'Echo',
+            style: GoogleFonts.caveat(),
+          ),
+          leading: currentUser.photo == null
+              ? Center(
+                  child: GestureDetector(
+                  // onTap: () => context.pushNamed(
+                  //   PeamanProfileScreen.route,
+                  //   arguments: PeamanProfileScreenArgs(
+                  //     userId: currentUser.uid!,
+                  //   ),
+                  // ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EchoProfileScreen(
+                          user: currentUser,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 33,
+                    width: 33,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/avatar_unknown.png',
+                          package: 'peaman_ui_components',
+                        ),
+                      ),
+                    ),
+                  ),
+                ))
+              : Center(
+                  child: PeamanAvatarBuilder.network(
+                    currentUser.photo,
+                    size: 33.0,
+                    // onPressed: () => context.pushNamed(
+                    //   PeamanProfileScreen.route,
+                    //   arguments: PeamanProfileScreenArgs(
+                    //     userId: currentUser.uid!,
+                    //   ),
+                    // ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => EchoProfileScreen(
+                            user: currentUser,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+          actions: [
+            Center(
+              child: PeamanRoundIconButton(
+                padding: EdgeInsets.all(7.w),
+                onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => EchoProfileScreen(
-                        user: currentUser,
-                      ),
+                      builder: (context) => const EchoExploreScreen(),
                     ),
                   );
                 },
-                child: Container(
-                  height: 33,
-                  width: 33,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/avatar_unknown.png',
-                        package: 'peaman_ui_components',
-                      ),
-                    ),
-                  ),
+                icon: Icon(
+                  Icons.explore,
+                  color: context.isDarkMode
+                      ? PeamanColors.white70
+                      : PeamanColors.black,
+                  size: 16.w,
                 ),
-              ))
-            : Center(
-                child: PeamanAvatarBuilder.network(
-                  currentUser.photo,
-                  size: 33.0,
-                  onPressed: () => context.pushNamed(
-                    PeamanProfileScreen.route,
-                    arguments: PeamanProfileScreenArgs(
-                      userId: currentUser.uid!,
-                    ),
-                  ),
-                ),
-              ),
-        actions: [
-          Center(
-            child: PeamanRoundIconButton(
-              padding: EdgeInsets.all(7.w),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const EchoExploreScreen(),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.explore,
-                color: context.isDarkMode
-                    ? PeamanColors.white70
-                    : PeamanColors.black,
-                size: 16.w,
-              ),
-            ).pR(10.0),
-          ),
-          Center(
-            child: PeamanRoundIconButton(
-              padding: EdgeInsets.all(7.w),
-              onPressed: () => context.pushNamed(
-                PeamanChatsListScreen.route,
-              ),
-              icon: SvgPicture.asset(
-                'assets/svgs/outlined_send_message.svg',
-                package: 'peaman_ui_components',
-                color: context.isDarkMode
-                    ? PeamanColors.white70
-                    : PeamanColors.black,
-                width: 16.w,
-              ),
-            ).pR(10.0),
-          ),
-        ],
-      );
-    }, feedsListBuilder: (context, ref) {
-      return RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(
-            providerOfPeamanTimelineFeedsFuture,
-          );
-          ref.invalidate(providerOfFetchMoment);
-        },
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: _momentList(),
+              ).pR(10.0),
             ),
-            Expanded(
-              flex: 5,
-              child: _feedList(),
+            Center(
+              child: PeamanRoundIconButton(
+                padding: EdgeInsets.all(7.w),
+                onPressed: () => context.pushNamed(
+                  PeamanChatsListScreen.route,
+                ),
+                icon: SvgPicture.asset(
+                  'assets/svgs/outlined_send_message.svg',
+                  package: 'peaman_ui_components',
+                  color: context.isDarkMode
+                      ? PeamanColors.white70
+                      : PeamanColors.black,
+                  width: 16.w,
+                ),
+              ).pR(10.0),
             ),
           ],
-        ),
-      );
-    });
+        );
+      },
+      feedsListBuilder: (context, ref) {
+        return RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(
+              providerOfPeamanTimelineFeedsFuture,
+            );
+            ref.invalidate(providerOfFetchMoment);
+          },
+          child: Flexible(
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: _momentList(),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: _feedList(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget _momentList() {
@@ -146,4 +172,10 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
       ),
     );
   }
+
+  // getData() async {
+  //   allUser = await _fetchFollowFollowingUsers.fetchUsersList(
+  //       uid: ref.watch(providerOfLoggedInUser).uid!, taskName: "followers");
+  //   print("daksfkljasflkjaklsjcnkaslnknjasjk: $allUser");
+  // }
 }

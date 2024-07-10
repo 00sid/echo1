@@ -14,8 +14,6 @@ class FollowNotifier extends StateNotifier<FollowProviderState> {
   Future<void> fetchIndividualFollowers({required String uid}) async {
     final FetchFollowFollowingUsers fetchUsers = FetchFollowFollowingUsers();
 
-    final followedSubUserList =
-        await fetchUsers.fetchUsersList(uid: uid, taskName: "followers");
     final allUsersAsync = _ref.watch(providerOfUsers);
     final allUsers = allUsersAsync.when(data: (data) {
       return data;
@@ -24,9 +22,12 @@ class FollowNotifier extends StateNotifier<FollowProviderState> {
     }, loading: () {
       return [];
     });
+    state = const FollowProviderState.loading();
+    final followedSubUserList =
+        await fetchUsers.fetchUsersList(uid: uid, taskName: "followers");
     List<PeamanUser>? followedUsers;
     if (followedSubUserList == null) {
-      state = FollowProviderState.initial();
+      state = const FollowProviderState.initial();
     } else {
       for (var user in allUsers) {
         for (var followingUser in followedSubUserList) {
@@ -39,3 +40,8 @@ class FollowNotifier extends StateNotifier<FollowProviderState> {
     }
   }
 }
+
+final providerOfUserFollowNotifier =
+    StateNotifierProvider<FollowNotifier, FollowProviderState>(
+  (ref) => FollowNotifier(ref: ref),
+);
