@@ -32,6 +32,9 @@ class _FollowerFollowingScreenState
     super.initState();
     _tabController =
         TabController(length: 2, vsync: this, initialIndex: widget.index);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setIndividualFollowerFollowingData();
+    });
   }
 
   @override
@@ -39,7 +42,6 @@ class _FollowerFollowingScreenState
     // TODO: implement dispose
     super.dispose();
     _tabController.dispose();
-    setIndividualFollowerFollowingData();
   }
 
   @override
@@ -55,6 +57,11 @@ class _FollowerFollowingScreenState
             ),
           ),
           centerTitle: false,
+          onPressedLeading: (onPressedLeading) {
+            context.pop();
+            ref.invalidate(providerOfUserFollowNotifier);
+            ref.invalidate(providerOfUserFollowingNotifier);
+          },
         ),
         // backgroundColor: context.isDarkMode ? AppColor.black : Colors.white,
         body: Column(

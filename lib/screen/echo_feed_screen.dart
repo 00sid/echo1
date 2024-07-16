@@ -135,19 +135,17 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
             );
             ref.invalidate(providerOfFetchMoment);
           },
-          child: Flexible(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: _momentList(),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: _feedList(),
-                ),
-              ],
-            ),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: _momentList(),
+              ),
+              Expanded(
+                flex: 5,
+                child: _feedList(),
+              ),
+            ],
           ),
         );
       },
@@ -161,14 +159,12 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
   }
 
   Widget _feedList() {
-    return Expanded(
-      child: PeamanFeedsList(
-        lastItemPadding: EdgeInsets.only(
-          top: 15.h,
-          bottom: 100.h,
-          left: 20.w,
-          right: 20.w,
-        ),
+    return PeamanFeedsList(
+      lastItemPadding: EdgeInsets.only(
+        top: 15.h,
+        bottom: 100.h,
+        left: 20.w,
+        right: 20.w,
       ),
     );
   }

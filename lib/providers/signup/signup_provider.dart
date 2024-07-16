@@ -29,6 +29,7 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
     required final String confirmPassword,
     final String? photo,
   }) async {
+    final fNameSplitted = fName.split(" ");
     final user = PeamanUser(
       name: '$fName $lName',
       userName: userName,
@@ -38,6 +39,11 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
       dob: 0,
       photo: photo,
       gender: PeamanGender.unknown,
+      searchKeys: [
+        fName.toLowerCase(),
+        lName.toLowerCase(),
+        userName.toLowerCase(),
+      ],
     );
 
     state = state.copyWith(

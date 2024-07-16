@@ -20,17 +20,17 @@ class FollowingNotifier extends StateNotifier<FollowingProviderState> {
     final allUsers = allUsersAsync.when(data: (data) {
       return data;
     }, error: (obj, stackTree) {
-      return [];
+      return <PeamanUser>[];
     }, loading: () {
-      return [];
+      return <PeamanUser>[];
     });
-    List<PeamanUser>? followingUsers;
+    List<PeamanUser> followingUsers = [];
     if (followingSubUserList == null) {
-      state = FollowingProviderState.initial();
+      state = const FollowingProviderState.initial();
     } else {
       for (var user in allUsers) {
         for (var followingUser in followingSubUserList) {
-          if (user.id == followingUser.uid) {
+          if (user.uid == followingUser.uid) {
             followingUsers!.add(user);
           }
         }
