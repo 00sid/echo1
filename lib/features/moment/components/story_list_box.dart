@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:echo1/features/moment/components/gradient_utils.dart';
 import 'package:echo1/features/moment/screens/echo_create_moment_screen.dart';
 import 'package:echo1/features/moment/screens/story_page.dart';
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
@@ -25,6 +26,8 @@ class StoryListBox extends ConsumerStatefulWidget {
 
 class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
   bool isCurrentUser = false;
+  List<Color>? meshColors;
+
   @override
   Widget build(BuildContext context) {
     final getCurrentUserId = ref.watch(providerOfLoggedInUser).uid;
@@ -183,12 +186,18 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
                     ImageSource.camera,
                   );
                   if (file != null) {
+                    meshColors = await generateMeshGradientFromImage(
+                      MemoryImage(file),
+                    );
+
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            EchoCreateMomentScreen(file: file),
+                        builder: (context) => EchoCreateMomentScreen(
+                          file: file,
+                          meshColors: meshColors!,
+                        ),
                       ),
                     );
                   }
@@ -214,12 +223,17 @@ class _MomentProfileBoxState extends ConsumerState<StoryListBox> {
                   Uint8List? file = await pickImage(ImageSource.gallery);
 
                   if (file != null) {
+                    meshColors = await generateMeshGradientFromImage(
+                      MemoryImage(file),
+                    );
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            EchoCreateMomentScreen(file: file),
+                        builder: (context) => EchoCreateMomentScreen(
+                          file: file,
+                          meshColors: meshColors!,
+                        ),
                       ),
                     );
                   }

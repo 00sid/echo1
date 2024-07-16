@@ -1,15 +1,20 @@
 import 'dart:typed_data';
+import 'package:echo1/features/moment/components/animated_box.dart';
 import 'package:echo1/features/moment/state/moment_post/model/moment_result.dart';
 import 'package:echo1/features/moment/state/moment_post/providers/moment_state_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:mesh_gradient/mesh_gradient.dart';
 
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 // ignore: must_be_immutable
 class EchoCreateMomentScreen extends ConsumerStatefulWidget {
   Uint8List file;
-  EchoCreateMomentScreen({super.key, required this.file});
+  final List<Color> meshColors;
+
+  EchoCreateMomentScreen(
+      {super.key, required this.file, required this.meshColors});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -22,29 +27,47 @@ class _EchoCreateMomentScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade700,
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.bottomRight,
-          children: [
-            _image(),
-            Positioned(
-              top: 20.h,
-              left: 20.w,
-              child: _heading(),
+      body: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          Hero(
+            tag: 'gradient',
+            transitionOnUserGestures: true,
+            child: AnimatedBox(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              child: AnimatedMeshGradient(
+                colors: widget.meshColors,
+                options: AnimatedMeshGradientOptions(
+                  amplitude: 30,
+                  grain: 0.4,
+                  frequency: 5,
+                  speed: 2,
+                ),
+              ),
             ),
-            _bottomSheet(),
-          ],
-        ),
+          ),
+          _image(),
+          Positioned(
+            top: 20.h,
+            left: 20.w,
+            child: _heading(),
+          ),
+          _bottomSheet(),
+        ],
       ),
     );
   }
 
   Widget _image() {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: MemoryImage(widget.file),
-          fit: BoxFit.contain,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: MemoryImage(widget.file),
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
