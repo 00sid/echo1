@@ -102,16 +102,17 @@ class _FollowingsScreenState extends ConsumerState<FollowingsScreen> {
                               .toList()
                               .length,
                           itemBuilder: (context, index) {
-                            final filteredUsers = allFollowingUsers!
-                                .where(
-                                  (user) =>
-                                      user.userName!.toLowerCase().contains(
-                                          controller.text.toLowerCase()) ||
-                                      user.name!.toLowerCase().contains(
-                                            controller.text.toLowerCase(),
-                                          ),
-                                )
-                                .toList();
+                            final List<PeamanUser> filteredUsers =
+                                allFollowingUsers!
+                                    .where(
+                                      (user) =>
+                                          user.userName!.toLowerCase().contains(
+                                              controller.text.toLowerCase()) ||
+                                          user.name!.toLowerCase().contains(
+                                                controller.text.toLowerCase(),
+                                              ),
+                                    )
+                                    .toList();
                             return filteredUsers.isEmpty
                                 ? Text("No user found")
                                 : UserTile(
