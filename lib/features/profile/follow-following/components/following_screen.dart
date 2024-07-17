@@ -22,18 +22,26 @@ class _FollowingsScreenState extends ConsumerState<FollowingsScreen> {
     final currentUserFollowingList = ref.watch(providerOfFollowingUser);
     final currentUser = ref.watch(providerOfLoggedInUser);
     List<PeamanUser>? allFollowingUsers;
-    print("following screen");
     if (currentUser.uid != widget.user.uid) {
       final users = ref.watch(providerOfUserFollowingNotifier);
       allFollowingUsers = users.when(
-          initial: () => [],
-          loading: () => [],
-          success: (data) {
-            return data;
-          },
-          error: (msj) {
-            return [];
-          });
+        initial: () => [],
+        loading: () {
+          return [];
+        },
+        success: (data) {
+          return data;
+        },
+        error: (msj) {
+          return [];
+        },
+      );
+      // for (int index = 0; index < allFollowingUsers!.length; index++) {
+      //   if (allFollowingUsers[index].uid == currentUser.uid) {
+      //     PeamanUser cUser = allFollowingUsers.removeAt(index);
+      //     allFollowingUsers.insert(0, cUser);
+      //   }
+      // }
     }
     return Scaffold(
       body: Column(

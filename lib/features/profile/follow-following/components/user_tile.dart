@@ -8,6 +8,7 @@ class UserTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = ref.watch(providerOfLoggedInUser);
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -27,25 +28,27 @@ class UserTile extends ConsumerWidget {
         subtitle: PeamanText.caption(
           user.userName,
         ),
-        trailing: PeamanButton.bordered(
-          value: 'Message',
-          width: 100.0,
-          borderRadius: 10.0,
-          padding: const EdgeInsets.all(0.0),
-          icon: SvgPicture.asset(
-            'assets/svgs/outlined_send_message.svg',
-            package: 'peaman_ui_components',
-            color: context.isDarkMode
-                ? PeamanColors.white70
-                : context.theme.colorScheme.primary,
-            width: 14.w,
-          ),
-          // onPressed: () {
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //     return EchoProfileScreen(user: user);
-          //   }));
-          // },
-        ),
+        trailing: currentUser.uid != user.uid
+            ? PeamanButton.bordered(
+                value: 'Message',
+                width: 100.0,
+                borderRadius: 10.0,
+                padding: const EdgeInsets.all(0.0),
+                icon: SvgPicture.asset(
+                  'assets/svgs/outlined_send_message.svg',
+                  package: 'peaman_ui_components',
+                  color: context.isDarkMode
+                      ? PeamanColors.white70
+                      : context.theme.colorScheme.primary,
+                  width: 14.w,
+                ),
+                // onPressed: () {
+                //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //     return EchoProfileScreen(user: user);
+                //   }));
+                // },
+              )
+            : null,
       ),
     );
   }

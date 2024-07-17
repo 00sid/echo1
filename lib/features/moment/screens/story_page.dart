@@ -1,7 +1,6 @@
 import 'package:echo1/features/moment/components/story_widget.dart';
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_following_user.dart';
-import 'package:echo1/features/moment/state/fetch_moments/providers/assign_moment_with_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -50,7 +49,7 @@ class _StoryPageState extends ConsumerState<StoryPage> {
     final usersWithMomentList = ref.watch(providerOfMomentWithFollowingUser);
 
     for (int i = 0; i < usersWithMomentList.length; i++) {
-      if (usersWithMomentList[i]!.user.uid == widget.userWithMoment.user.uid) {
+      if (usersWithMomentList[i].user.uid == widget.userWithMoment.user.uid) {
         initialPage = i;
         controller = PageController(initialPage: initialPage!);
         break;
