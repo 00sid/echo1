@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:echo1/features/moment/components/gradient_utils.dart';
+import 'package:echo1/features/profile/components/echo_update_profile_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 class EchoProfileBasicDetailsOverview extends ConsumerStatefulWidget {
@@ -14,6 +19,8 @@ class EchoProfileBasicDetailsOverview extends ConsumerStatefulWidget {
 
 class _EchoProfileBasicDetailsOverviewState
     extends ConsumerState<EchoProfileBasicDetailsOverview> {
+  List<Color>? meshColors;
+
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(providerOfLoggedInUser);
@@ -94,7 +101,29 @@ class _EchoProfileBasicDetailsOverviewState
                     ),
                   ],
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  XFile? file = await pickImage(
+                    ImageSource.camera,
+                  );
+                  if (file != null) {
+                    meshColors = await generateMeshGradientFromImage(
+                      FileImage(
+                        File(file.path),
+                      ),
+                    );
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EchoUpdateProfileScreen(
+                          file: file,
+                          meshColors: meshColors!,
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
@@ -112,7 +141,29 @@ class _EchoProfileBasicDetailsOverviewState
                     ),
                   ],
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  XFile? file = await pickImage(
+                    ImageSource.gallery,
+                  );
+                  if (file != null) {
+                    meshColors = await generateMeshGradientFromImage(
+                      FileImage(
+                        File(file.path),
+                      ),
+                    );
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EchoUpdateProfileScreen(
+                          file: file,
+                          meshColors: meshColors!,
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
@@ -137,5 +188,14 @@ class _EchoProfileBasicDetailsOverviewState
             ],
           );
         });
+  }
+
+  Future<XFile?> pickImage(ImageSource source) async {
+    final imagePicker = ImagePicker();
+    final file = await imagePicker.pickImage(source: source);
+    if (file != null) {
+      return file;
+    }
+    return null;
   }
 }

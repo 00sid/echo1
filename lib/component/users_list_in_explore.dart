@@ -1,4 +1,3 @@
-import 'package:echo1/component/verified_icon.dart';
 import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/utils/app_color.dart';
@@ -89,7 +88,9 @@ class _UsersInExploreState extends ConsumerState<UsersInExplore> {
                     package: 'peaman_ui_components',
                   ),
                 ),
-          user.isVerified ? const VerifiedIcon() : const SizedBox(),
+          user.isVerified
+              ? const PeamanVerifiedBadge().pL(16.0)
+              : const SizedBox(),
         ],
       ),
       title: Text(

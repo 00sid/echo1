@@ -1,6 +1,5 @@
 import 'package:echo1/features/moment/components/story_list.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
-import 'package:echo1/features/profile/follow-following/providers/follow_following/backend/fetch_follow_following.dart';
 import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,6 @@ class EchoFeedScreen extends ConsumerStatefulWidget {
 }
 
 class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
-  final FetchFollowFollowingUsers _fetchFollowFollowingUsers =
-      FetchFollowFollowingUsers();
   List<PeamanSubUser>? allUser;
   @override
   void initState() {
@@ -26,8 +23,7 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(providerOfLoggedInUser);
-    print("feed screen");
-    // getData();
+
     return PeamanTimelineFeedsScreen(
       headerBuilder: (context, ref) {
         return PeamanTimelineFeedsScreenHeader(
@@ -168,10 +164,4 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
       ),
     );
   }
-
-  // getData() async {
-  //   allUser = await _fetchFollowFollowingUsers.fetchUsersList(
-  //       uid: ref.watch(providerOfLoggedInUser).uid!, taskName: "followers");
-  //   print("daksfkljasflkjaklsjcnkaslnknjasjk: $allUser");
-  // }
 }

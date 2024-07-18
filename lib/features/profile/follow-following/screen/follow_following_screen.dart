@@ -50,11 +50,19 @@ class _FollowerFollowingScreenState
       length: 2,
       child: Scaffold(
         appBar: PeamanAppbar(
-          title: Text(
-            "@${widget.user.userName}",
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+          title: Row(
+            children: [
+              Text(
+                "@${widget.user.userName}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 5),
+              widget.user.isVerified
+                  ? const PeamanVerifiedBadge().pL(4.0)
+                  : const SizedBox(),
+            ],
           ),
           centerTitle: false,
           onPressedLeading: (onPressedLeading) {

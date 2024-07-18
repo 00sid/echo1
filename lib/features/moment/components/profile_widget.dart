@@ -1,4 +1,3 @@
-import 'package:echo1/component/verified_icon.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,7 +60,9 @@ class ProfileWidget extends ConsumerWidget {
               const SizedBox(
                 width: 5,
               ),
-              user.isVerified ? const VerifiedIcon() : const SizedBox(),
+              user.isVerified
+                  ? const PeamanVerifiedBadge().pL(16.0)
+                  : const SizedBox(),
               const SizedBox(
                 width: 5,
               ),

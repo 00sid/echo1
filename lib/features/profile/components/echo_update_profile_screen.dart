@@ -1,28 +1,30 @@
-import 'dart:typed_data';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:echo1/features/moment/components/animated_box.dart';
-import 'package:echo1/features/moment/state/moment_post/model/moment_result.dart';
-import 'package:echo1/features/moment/state/moment_post/providers/moment_state_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mesh_gradient/mesh_gradient.dart';
-
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
-// ignore: must_be_immutable
-class EchoCreateMomentScreen extends ConsumerStatefulWidget {
-  final Uint8List file;
+class EchoUpdateProfileScreen extends ConsumerStatefulWidget {
+  final XFile file;
   final List<Color> meshColors;
-
-  const EchoCreateMomentScreen(
-      {super.key, required this.file, required this.meshColors});
+  const EchoUpdateProfileScreen({
+    super.key,
+    required this.file,
+    required this.meshColors,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _EchoCreateMomentScreenState();
+      _EchoUpdateProfileScreenState();
 }
 
-class _EchoCreateMomentScreenState
-    extends ConsumerState<EchoCreateMomentScreen> {
+class _EchoUpdateProfileScreenState
+    extends ConsumerState<EchoUpdateProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +67,9 @@ class _EchoCreateMomentScreenState
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: MemoryImage(widget.file),
+            image: FileImage(
+              File(widget.file.path),
+            ),
             fit: BoxFit.contain,
           ),
         ),
@@ -89,7 +93,7 @@ class _EchoCreateMomentScreenState
             width: 60.w,
           ),
           PeamanText.heading4(
-            'Create Moment',
+            'Update Profile',
             style: GoogleFonts.caveat().copyWith(
               color: AppColor.black,
               fontWeight: FontWeight.bold,
@@ -108,41 +112,55 @@ class _EchoCreateMomentScreenState
           bgColor: AppColor.green,
           padding: EdgeInsets.all(20.w),
           onPressed: () {
-            uploadMoment();
+            updateProfile();
           },
           icon: Icon(
-            Icons.arrow_forward_ios_sharp,
+            Icons.check_rounded,
             size: 24.w,
             color: AppColor.white,
           ),
         ),
       );
-  uploadMoment() {
-    ref.read(providerOfMomentState.notifier).postMoment(
-          userId: ref.watch(providerOfLoggedInUser).uid!,
-          file: widget.file,
-          createdAt: DateTime.now(),
-        );
 
-    if (ref.watch(providerOfMomentState).authResult == MomentResult.success) {
+  updateProfile() async {
+    final currentUser = ref.watch(providerOfLoggedInUser);
+    final storageRepository = ref.read(
+      providerOfPeamanStorageRepository,
+    );
+    final randomId = PeamanReferenceHelper.ref.collection('random').doc().id;
+    final fileName = '$randomId.jpg';
+
+    String? image;
+
+    final imageState = await storageRepository.uploadFile(
+      path: '/users/$randomId/profile_image',
+      fileName: fileName,
+      file: File(widget.file.path),
+    );
+    image = imageState.when(
+      (success) => success,
+      (failure) => null,
+    );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .update({
+      'photo': image,
+    }).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: AppColor.green,
-          content: Text('Moment created successfully'),
+          content: Text('Profile Updated Successfully'),
         ),
       );
-    } else if (ref.watch(providerOfMomentState).authResult ==
-        MomentResult.failed) {
+
+      context.pop();
+    }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            'Failed to upload. Please try again.',
-          ),
+          content: Text('Failed to update profile'),
         ),
       );
-    }
-
-    context.pop();
+      context.pop();
+    });
   }
 }
