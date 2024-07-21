@@ -1,5 +1,6 @@
 import 'package:echo1/features/moment/state/fetch_moments/model/moment_with_user_model.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
+import 'package:echo1/features/moment/state/fetch_moments/providers/following_list_provider.dart';
 import 'package:echo1/features/moment/state/moment_info/models/moment_model.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -26,8 +27,10 @@ final providerOfAssigningMomentWithUserTest =
     }, loading: () {
       return [];
     });
-
-    List<UserWithMomentModel>? userWithMomentList = [];
+    final List<PeamanUser> followingUsersList =
+        ref.watch(providerOfFollowingUsers);
+    List<UserWithMomentModel> userWithMomentList = [];
+    List<UserWithMomentModel> filteredUserWithMomentList = [];
 
     if (momentList.isNull) {
       return userWithMomentList;
@@ -54,13 +57,20 @@ final providerOfAssigningMomentWithUserTest =
         for (var moment in userWithMoment.moments!) {
           if (moment.seenBy.contains(currentUser.uid)) {
             userWithMoment.isTopStorySeen = true;
+          } else {
+            userWithMoment.isTopStorySeen = false;
           }
         }
       }
-      if (kDebugMode) {
-        print(userWithMomentList);
+      for (PeamanUser user in followingUsersList) {
+        for (UserWithMomentModel userWithMoment in userWithMomentList) {
+          if (user.uid == userWithMoment.user.uid) {
+            filteredUserWithMomentList.add(userWithMoment);
+          }
+        }
       }
-      return userWithMomentList;
+
+      return filteredUserWithMomentList;
     }
   },
 );

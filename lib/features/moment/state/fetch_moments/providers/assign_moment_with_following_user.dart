@@ -12,9 +12,6 @@ final providerOfMomentWithFollowingUser =
   final currentUser = ref.watch(providerOfLoggedInUser);
   final userWithMomentList = ref.watch(providerOfAssigningMomentWithUserTest);
 
-  final List<PeamanUser> followingUsersList =
-      ref.watch(providerOfFollowingUsers);
-
   if (userWithMomentList.isEmpty) {
     userWithSortedMomentList.add(UserWithMomentModel(user: currentUser));
   } else {

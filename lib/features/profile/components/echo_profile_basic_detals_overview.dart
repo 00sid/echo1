@@ -30,17 +30,29 @@ class _EchoProfileBasicDetailsOverviewState
         return Stack(
           alignment: Alignment.center,
           children: [
-            user.photo == null
-                ? PeamanAvatarBuilder.asset(
-                    'assets/images/avatar_unknown.png',
-                    package: "peaman_ui_components",
-                    size: 100.w,
-                  ).pB(10)
-                : PeamanAvatarBuilder.network(
-                    user.photo,
-                    size: 100.w,
-                    userId: user.uid,
-                  ).pB(10),
+            widget.user.uid == currentUser.uid
+                ? currentUser.photo == null
+                    ? PeamanAvatarBuilder.asset(
+                        'assets/images/avatar_unknown.png',
+                        package: "peaman_ui_components",
+                        size: 100.w,
+                      ).pB(10)
+                    : PeamanAvatarBuilder.network(
+                        currentUser.photo,
+                        size: 100.w,
+                        userId: user.uid,
+                      ).pB(10)
+                : user.photo == null
+                    ? PeamanAvatarBuilder.asset(
+                        'assets/images/avatar_unknown.png',
+                        package: "peaman_ui_components",
+                        size: 100.w,
+                      ).pB(10)
+                    : PeamanAvatarBuilder.network(
+                        user.photo,
+                        size: 100.w,
+                        userId: user.uid,
+                      ).pB(10),
             widget.user.uid == currentUser.uid
                 ? Positioned(
                     bottom: 12,
