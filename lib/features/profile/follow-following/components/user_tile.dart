@@ -2,33 +2,42 @@ import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
-class UserTile extends ConsumerWidget {
+class UserTile extends ConsumerStatefulWidget {
   final PeamanUser user;
-  const UserTile({super.key, required this.user});
+
+  const UserTile({
+    super.key,
+    required this.user,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _UserTileState();
+}
+
+class _UserTileState extends ConsumerState<UserTile> {
+  @override
+  Widget build(BuildContext context) {
     final currentUser = ref.watch(providerOfLoggedInUser);
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return EchoProfileScreen(user: user);
+          return EchoProfileScreen(user: widget.user);
         }));
       },
       child: ListTile(
-        leading: user.photo == null
+        leading: widget.user.photo == null
             ? const PeamanAvatarBuilder.asset(
                 "assets/images/avatar_unknown.png",
                 package: 'peaman_ui_components',
               )
-            : PeamanAvatarBuilder.network(user.photo),
+            : PeamanAvatarBuilder.network(widget.user.photo),
         title: PeamanText.subtitle1(
-          user.name,
+          widget.user.name,
         ),
         subtitle: PeamanText.caption(
-          user.userName,
+          widget.user.userName,
         ),
-        trailing: currentUser.uid != user.uid
+        trailing: currentUser.uid != widget.user.uid
             ? PeamanButton.bordered(
                 value: 'Message',
                 width: 100.0,
@@ -42,13 +51,25 @@ class UserTile extends ConsumerWidget {
                       : context.theme.colorScheme.primary,
                   width: 14.w,
                 ),
-                // onPressed: () {
-                //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //     return EchoProfileScreen(user: user);
-                //   }));
-                // },
+                onPressed: _onPressedMessage,
               )
             : null,
+      ),
+    );
+  }
+
+  void _onPressedMessage() {
+    final uid = ref.read(
+      providerOfLoggedInUser.select((value) => value.uid),
+    );
+    context.pushNamed(
+      PeamanChatConversationScreen.route,
+      arguments: PeamanChatConversationArgs.byUserIds(
+        userIds: [
+          widget.user.uid!,
+          uid!,
+        ]..sort(),
+        chatType: PeamanChatType.oneToOne,
       ),
     );
   }

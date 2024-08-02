@@ -47,5 +47,10 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to choose images from the gallery</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>We need access to the microphone for recording audio.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to the camera for capturing photos and videos.</string>
+
 </dict>
 </plist>

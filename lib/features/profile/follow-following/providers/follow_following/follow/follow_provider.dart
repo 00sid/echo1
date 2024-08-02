@@ -13,7 +13,7 @@ class FollowNotifier extends StateNotifier<FollowProviderState> {
 
   Future<void> fetchIndividualFollowers({required String uid}) async {
     final FetchFollowFollowingUsers fetchUsers = FetchFollowFollowingUsers();
-
+    final currentUser = _ref.watch(providerOfLoggedInUser);
     final allUsersAsync = _ref.watch(providerOfUsers);
     final allUsers = allUsersAsync.when(data: (data) {
       return data;
@@ -34,6 +34,13 @@ class FollowNotifier extends StateNotifier<FollowProviderState> {
           if (user.uid == followingUser.uid) {
             followedUsers.add(user);
           }
+        }
+      }
+      for (int i = 0; i < followedUsers.length; i++) {
+        if (followedUsers[i].uid == currentUser.uid) {
+          PeamanUser ctUser = followedUsers.removeAt(i);
+          followedUsers.insert(0, ctUser);
+          break;
         }
       }
       state = FollowProviderState.success(followedUsers);

@@ -1,6 +1,8 @@
+import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 class ProfileWidget extends ConsumerWidget {
@@ -14,10 +16,12 @@ class ProfileWidget extends ConsumerWidget {
     final isCurrentUser = user.uid == getCurrentUserId;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(
-          PeamanProfileScreen.route,
-          arguments: PeamanProfileScreenArgs(
-            userId: user.uid!,
+        Navigator.push(
+          context,
+          PageTransition(
+            child: EchoProfileScreen(user: user),
+            type: PageTransitionType.scale,
+            alignment: Alignment.center,
           ),
         );
       },

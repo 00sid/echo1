@@ -33,7 +33,7 @@ dependencies:
   peaman_ui_components:
     git:
       url: https://github.com/shrijanRegmi/peaman_ui_components.git
-      ref: new_version
+      ref: feature/comment
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -48,7 +48,7 @@ dependencies:
   image_picker: ^0.8.9
   firebase_storage: ^11.6.9
   json_annotation: ^4.9.0
-  uuid: ^4.4.0
+  uuid: ^3.0.7
   timeago: ^3.6.1
   get_time_ago: ^1.3.1
   story_view: ^0.16.0
@@ -56,6 +56,9 @@ dependencies:
   mesh_gradient: ^1.3.7
   sprung: ^3.0.1
   firebase_core: ^2.27.0
+  audioplayers: ^5.2.1
+  permission_handler: ^11.3.1
+  flutter_sound: ^9.2.13
 
 dev_dependencies:
   flutter_test:

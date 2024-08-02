@@ -1,5 +1,6 @@
 import 'package:echo1/features/moment/components/story_list.dart';
 import 'package:echo1/features/moment/state/fetch_moments/providers/fetch_moments_provider.dart';
+import 'package:echo1/features/posts/components/echo_feed_list.dart';
 import 'package:echo1/features/profile/screens/echo_profile_screen.dart';
 import 'package:echo1/screen/echo_explore_screen.dart';
 import 'package:flutter/material.dart';
@@ -155,13 +156,14 @@ class _EchoFeedScreenState extends ConsumerState<EchoFeedScreen> {
   }
 
   Widget _feedList() {
-    return PeamanFeedsList(
-      lastItemPadding: EdgeInsets.only(
-        top: 15.h,
-        bottom: 100.h,
-        left: 20.w,
-        right: 20.w,
-      ),
-    );
+    // return PeamanFeedsList(
+    //   lastItemPadding: EdgeInsets.only(
+    //     top: 15.h,
+    //     bottom: 100.h,
+    //     left: 20.w,
+    //     right: 20.w,
+    //   ),
+    // );
+    return const EchoFeedList();
   }
 }

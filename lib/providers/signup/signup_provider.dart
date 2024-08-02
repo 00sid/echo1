@@ -51,7 +51,7 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
       dob: 0,
       photo: photo,
       gender: PeamanGender.unknown,
-      searchKeys: fnameResult + lnameResult,
+      searchKeys: lnameResult + fnameResult,
     );
 
     state = state.copyWith(

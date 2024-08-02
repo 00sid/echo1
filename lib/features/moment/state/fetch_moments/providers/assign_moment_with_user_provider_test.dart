@@ -52,16 +52,17 @@ final providerOfAssigningMomentWithUserTest =
         //assigning moment end
       }
 
-      //updating isTopStorySeen
-      for (var userWithMoment in userWithMomentList) {
-        for (var moment in userWithMoment.moments!) {
-          if (moment.seenBy.contains(currentUser.uid)) {
-            userWithMoment.isTopStorySeen = true;
-          } else {
-            userWithMoment.isTopStorySeen = false;
-          }
-        }
-      }
+      // //updating isTopStorySeen
+      // for (var userWithMoment in userWithMomentList) {
+      //   for (var moment in userWithMoment.moments!) {
+      //     if (moment.seenBy.contains(currentUser.uid)) {
+      //       userWithMoment.isTopStorySeen = true;
+      //     } else {
+      //       userWithMoment.isTopStorySeen = false;
+      //     }
+      //   }
+      // }
+      //filtering the following users
       for (PeamanUser user in followingUsersList) {
         for (UserWithMomentModel userWithMoment in userWithMomentList) {
           if (user.uid == userWithMoment.user.uid) {
