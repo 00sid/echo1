@@ -53,6 +53,7 @@ class FetchFollowFollowingUsers {
       for (var doc in docs) {
         // Check if doc.data() is not null
         final data = doc.data();
+        // ignore: unnecessary_null_comparison
         if (data != null) {
           subUserList.add(
             PeamanSubUser.fromJson(data),

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:echo1/providers/toastmsg/msg_builder.dart';
 import 'package:echo1/providers/explore/explore_provider.dart';
 import 'package:echo1/providers/signup/signup_provider.dart';
+import 'package:echo1/providers/toastmsg/msg_provider.dart';
 import 'package:echo1/screen/echo_onboarding_screen.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:echo1/utils/utils.dart';
@@ -41,8 +43,14 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _listenToSignUpState();
     final usersAsyncValue = ref.watch(providerOfUsers);
     // final users = usersAsyncValue.asData!.value;
     final List<PeamanUser> users = usersAsyncValue.when(data: (data) {
@@ -54,6 +62,8 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
     });
     List<String> userNames =
         users.map((e) => e.userName!.toLowerCase()).toList();
+    _listenToSignUpState();
+    listenForMessage(context, ref);
 
     return Scaffold(
       appBar: AppBar(
@@ -157,13 +167,13 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                           usernameController.text.isNotEmpty &&
                           emailController.text.isNotEmpty) {
                         if (userNames.contains(username.toLowerCase())) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
+                          ref.read(messageProvider.notifier).showError(
                                 "Username already exists. Please try another one.",
-                              ),
-                            ),
-                          );
+                              );
+                        } else if (!email.endsWith('@gmail.com')) {
+                          ref
+                              .read(messageProvider.notifier)
+                              .showError("Please enter a valid email address");
                         } else {
                           if (passwordController.text.trim() ==
                               confirmPasswordController.text.trim()) {
@@ -190,6 +200,7 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                               );
                             }
 
+                            // ignore: use_build_context_synchronously
                             ref.read(providerOfSignUp.notifier).signUpUser(
                                   lName: lastName,
                                   fName: firstName,
@@ -198,21 +209,18 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
                                   password: password,
                                   photo: image,
                                   confirmPassword: confirmPassword,
+                                  context: context,
                                 );
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Enter password correctly"),
-                              ),
-                            );
+                            ref.read(messageProvider.notifier).showError(
+                                  "Enter password correctly",
+                                );
                           }
                         }
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Please fill all fields"),
-                          ),
-                        );
+                        ref.read(messageProvider.notifier).showError(
+                              "Please fill all the fields",
+                            );
                       }
                     },
                   ),
@@ -269,7 +277,9 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
               Navigator.pushAndRemoveUntil(
                   context,
                   PageTransition(
-                      child: const EchoOnboardingScreen(),
+                      child: EchoOnboardingScreen(
+                        file: _image,
+                      ),
                       type: PageTransitionType.fade),
                   (route) => false);
             },
@@ -304,7 +314,9 @@ class _EchoSignUpScreenState extends ConsumerState<EchoSignUpScreen> {
               left: 80,
               child: IconButton(
                 onPressed: selectImage,
-                icon: const Icon(Icons.add_a_photo),
+                icon: const Icon(
+                  Icons.add_a_photo,
+                ),
               ))
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:echo1/providers/login/states/login_provider_state.dart';
+import 'package:echo1/providers/toastmsg/msg_provider.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 final providerOfLogin =
@@ -33,11 +34,15 @@ class LoginProvider extends StateNotifier<LoginProviderState> {
 
     result.when(
       (success) {
+        _ref.read(messageProvider.notifier).showSuccess("Login Successful");
         state = state.copyWith(
           loginUserState: LoginUserState.success(success as PeamanUser),
         );
       },
       (failure) {
+        _ref.read(messageProvider.notifier).showError(
+              failure.message,
+            );
         state = state.copyWith(
           loginUserState: LoginUserState.error(failure),
         );

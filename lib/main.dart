@@ -37,7 +37,9 @@ void main() async {
               settings,
               const PeamanWrapper(
                 loginScreen: EchoLoginScreen(),
-                onboardingScreen: EchoOnboardingScreen(),
+                onboardingScreen: EchoOnboardingScreen(
+                  file: null,
+                ),
                 splashScreen: EchoSplashScreen(),
                 homeScreen: EchoFeedScreen(),
               ),

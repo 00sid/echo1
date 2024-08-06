@@ -26,6 +26,7 @@ class FollowingNotifier extends StateNotifier<FollowingProviderState> {
       return <PeamanUser>[];
     });
     List<PeamanUser> followingUsers = [];
+    // ignore: unnecessary_null_comparison
     if (followingSubUserList == null) {
       state = const FollowingProviderState.initial();
     } else {

@@ -1,4 +1,4 @@
-import 'package:echo1/features/comment/providers/echo_comments_list_item_provider.dart';
+import 'package:echo1/features/commentTest/providers/echo_comments_list_item_provider.dart';
 import 'package:echo1/features/commentTest/providers/echo_view_comments_provider.dart';
 import 'package:echo1/features/commentTest/views/widgets/echo_comments_list_item.dart';
 import 'package:flutter/material.dart';

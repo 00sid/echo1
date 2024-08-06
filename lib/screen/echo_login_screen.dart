@@ -1,4 +1,6 @@
+import 'package:echo1/providers/toastmsg/msg_builder.dart';
 import 'package:echo1/providers/login/login_provider.dart';
+import 'package:echo1/providers/toastmsg/msg_provider.dart';
 import 'package:echo1/screen/echo_feed_screen.dart';
 import 'package:echo1/screen/echo_forgot_password_screen.dart';
 import 'package:echo1/screen/echo_signup_screen.dart';
@@ -27,8 +29,17 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _listenToLoginState();
+
+    listenForMessage(context, ref);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColor.green,
@@ -86,11 +97,9 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
                         .read(providerOfLogin.notifier)
                         .loginUser(email: email, password: password);
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Please fill all the fields"),
-                      ),
-                    );
+                    ref
+                        .read(messageProvider.notifier)
+                        .showError("Please fill all the fields");
                   }
                 },
                 color: AppColor.white,
@@ -181,31 +190,7 @@ class _EchoLoginScreenState extends ConsumerState<EchoLoginScreen> {
                 ),
               );
             },
-            orElse: () {
-              if (emailController.text.trim().isEmpty &&
-                  passwordController.text.trim().isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Please fill all the fields."),
-                    backgroundColor: AppColor.green,
-                  ),
-                );
-              } else if (!emailController.text.trim().endsWith("@gmail.com")) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Please enter email correctly."),
-                    backgroundColor: AppColor.green,
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Please enter valid email and password"),
-                    backgroundColor: AppColor.green,
-                  ),
-                );
-              }
-            },
+            orElse: () {},
           );
         }
       },

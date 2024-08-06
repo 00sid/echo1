@@ -1,5 +1,6 @@
 import 'package:echo1/features/audio/screen/box.dart';
 import 'package:echo1/features/commentTest/providers/echo_view_comments_provider.dart';
+import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
@@ -129,14 +130,13 @@ class _EchoCommentInputState extends ConsumerState<EchoCommentInput> {
         GestureDetector(
           onTap: () {
             _showDialogFromBottom(context);
-            // _handleAudioComment();
           },
           behavior: HitTestBehavior.opaque,
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: context.theme.inputDecorationTheme.suffixIconColor,
+              color: AppColor.green,
             ),
             child: Icon(
               Icons.mic,
@@ -159,9 +159,9 @@ class _EchoCommentInputState extends ConsumerState<EchoCommentInput> {
           behavior: HitTestBehavior.opaque,
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: context.theme.inputDecorationTheme.suffixIconColor,
+              color: AppColor.green,
             ),
             child: SvgPicture.asset(
               'assets/svgs/outlined_send_message.svg',

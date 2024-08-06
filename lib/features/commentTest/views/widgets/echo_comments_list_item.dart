@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:echo1/features/commentTest/providers/echo_comments_list_item_provider.dart';
 import 'package:echo1/features/commentTest/views/widgets/echo_comments_list.dart';
+import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 import 'package:peaman_ui_components/src/features/comment/extensions/peaman_comment_ext.dart';
@@ -68,7 +69,7 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _contentBuilder(),
+        _contentBuilder(context),
         if (widget.comment.parent == PeamanCommentParent.feed)
           Consumer(
             builder: (context, ref, child) {
@@ -90,7 +91,7 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
     ).pB(widget.comment.parent == PeamanCommentParent.feed ? 20.0 : 10.0);
   }
 
-  Widget _contentBuilder() {
+  Widget _contentBuilder(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
         final createCommentState = ref.watch(
@@ -118,7 +119,14 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(_borderRadius.spMin),
-                    color: PeamanColors.white,
+                    border: context.isDarkMode
+                        ? Border.all(
+                            color: PeamanColors.grey,
+                          )
+                        : null,
+                    color: context.isDarkMode
+                        ? PeamanColors.primaryDark
+                        : PeamanColors.white,
                   ),
                   child: Column(
                     children: [
@@ -145,7 +153,7 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
                           ),
                         ],
                       ).pad(10.0),
-                      _footerBuilder(),
+                      _footerBuilder(context),
                     ],
                   ),
                 ).pX(20.0),
@@ -272,7 +280,7 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: AppColor.green,
           radius: 18,
           child: IconButton(
             icon: Icon(
@@ -283,26 +291,30 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
               if (isPlaying) {
                 await audioPlayer.pause();
               } else {
-                Source source = UrlSource(widget.comment.audioUrl!);
+                Source source = UrlSource(
+                  widget.comment.audioUrl!,
+                );
                 await audioPlayer.play(source);
               }
             },
           ),
         ),
-        Column(
-          children: [
-            Slider(
-                activeColor: Colors.green,
-                inactiveColor: Colors.grey,
-                min: 0,
-                max: duration.inSeconds.toDouble(),
-                value: postion.inSeconds.toDouble(),
-                onChanged: (value) async {
-                  final position = Duration(seconds: value.toInt());
-                  await audioPlayer.seek(position);
-                  await audioPlayer.resume();
-                }),
-          ],
+        Expanded(
+          child: Column(
+            children: [
+              Slider(
+                  activeColor: Colors.green,
+                  inactiveColor: Colors.grey,
+                  min: 0,
+                  max: duration.inSeconds.toDouble(),
+                  value: postion.inSeconds.toDouble(),
+                  onChanged: (value) async {
+                    final position = Duration(seconds: value.toInt());
+                    await audioPlayer.seek(position);
+                    await audioPlayer.resume();
+                  }),
+            ],
+          ),
         ),
         Text(
           formatTime(postion),
@@ -311,7 +323,7 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
     );
   }
 
-  Widget _footerBuilder() {
+  Widget _footerBuilder(BuildContext context) {
     const isActive = false;
 
     return Container(
@@ -320,7 +332,9 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
           bottomLeft: Radius.circular(_borderRadius.spMin),
           bottomRight: Radius.circular(_borderRadius.spMin),
         ),
-        color: PeamanColors.extraLightGrey2,
+        color: context.isDarkMode
+            ? PeamanColors.greyDark
+            : PeamanColors.extraLightGrey2,
       ),
       child: Consumer(
         builder: (context, ref, child) {
@@ -353,6 +367,7 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
                     package: 'peaman_ui_components',
                     width: 18.spMin,
                     color: isActive
+                        // ignore: dead_code
                         ? PeamanColors.midLightGrey
                         : PeamanColors.grey,
                   )
@@ -370,40 +385,6 @@ class _EchoCommentsListItemState extends ConsumerState<EchoCommentsListItem> {
                   ),
                 ],
               ),
-              if (widget.comment.parent == PeamanCommentParent.feed)
-                Consumer(
-                  builder: (context, ref, child) {
-                    final isRepliesVisible = ref.watch(
-                      providerOfEchoCommentsListItemProvider(widget.comment.id!)
-                          .select((value) => value.isRepliesVisible),
-                    );
-
-                    return Row(
-                      children: [
-                        PeamanText.body2(
-                          '${widget.comment.repliesCount}',
-                          style: TextStyle(
-                            fontSize: 12.spMin,
-                            color: isRepliesVisible
-                                ? PeamanColors.secondary
-                                : null,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.spMin,
-                        ),
-                        SvgPicture.asset(
-                          'assets/svgs/outlined_comment.svg',
-                          package: 'peaman_ui_components',
-                          width: 18.spMin,
-                          color: isRepliesVisible
-                              ? PeamanColors.secondary
-                              : PeamanColors.grey,
-                        ),
-                      ],
-                    ).pXY(10.0, 15.0).onPressed(_handleRepliesButtonPressed);
-                  },
-                ),
             ],
           );
         },

@@ -1,4 +1,7 @@
 import 'package:echo1/providers/signup/states/signup_provider_state.dart';
+import 'package:echo1/providers/toastmsg/msg_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:peaman_ui_components/peaman_ui_components.dart';
 
 final providerOfSignUp =
@@ -21,6 +24,7 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
       _ref.read(providerOfPeamanAuthRepository);
 
   Future<void> signUpUser({
+    required BuildContext context,
     required final String lName,
     required final String fName,
     required final String userName,
@@ -66,11 +70,16 @@ class SignUpProvider extends StateNotifier<SignUpProviderState> {
 
     result.when(
       (success) {
+        _ref
+            .read(messageProvider.notifier)
+            .showSuccess("User created successfully");
+
         state = state.copyWith(
           signUpUserState: SignUpUserState.success(success),
         );
       },
       (failure) {
+        _ref.read(messageProvider.notifier).showError(failure.message);
         state = state.copyWith(
           signUpUserState: SignUpUserState.error(failure),
         );

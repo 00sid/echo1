@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:echo1/features/audio/serivces/post_audio.dart';
+import 'package:echo1/features/audio/services/post_audio.dart';
 import 'package:echo1/features/commentTest/providers/echo_view_comments_provider.dart';
 import 'package:echo1/utils/app_color.dart';
 import 'package:flutter/material.dart';

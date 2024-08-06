@@ -26,6 +26,7 @@ class FollowNotifier extends StateNotifier<FollowProviderState> {
     final followedSubUserList =
         await fetchUsers.fetchUsersList(uid: uid, taskName: "followers");
     List<PeamanUser> followedUsers = [];
+    // ignore: unnecessary_null_comparison
     if (followedSubUserList == null) {
       state = const FollowProviderState.initial();
     } else {
